@@ -56,3 +56,52 @@ export interface Translation {
     location: string;
   };
 }
+
+export interface AboutValue {
+  icon: string;
+  text_en: string;
+  text_fr: string;
+  text_ar: string;
+  text_ama: string;
+}
+
+export interface About {
+  id: number;
+  story_title_en: string;
+  story_title_fr: string;
+  story_title_ar: string;
+  story_title_ama: string;
+  section_label_en: string;
+  section_label_fr: string;
+  section_label_ar: string;
+  section_label_ama: string;
+  story_description_en: string;
+  story_description_fr: string;
+  story_description_ar: string;
+  story_description_ama: string;
+  badge_text_en: string;
+  badge_text_fr: string;
+  badge_text_ar: string;
+  badge_text_ama: string;
+  image_url: string;
+  values: AboutValue[];
+}
+
+export interface Contact {
+  id: number;
+  title_en: string;
+  title_fr: string;
+  title_ar: string;
+  title_ama: string;
+  phone: string;
+  email: string;
+  location_en: string;
+  location_fr: string;
+  location_ar: string;
+  location_ama: string;
+  facebook_url: string | null;
+  instagram_url: string | null;
+  twitter_url: string | null;
+  whatsapp_number: string | null;
+  map_embed_url: string | null;
+}

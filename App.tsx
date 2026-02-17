@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Language, CartItem, Product } from './types';
 import { translations } from './translations';
@@ -67,9 +66,9 @@ const App: React.FC = () => {
       
       <main>
         <Hero t={t.hero} isRTL={isRTL} />
-        <About t={t.about} />
+        <About lang={lang} />
         <Products t={t.products} lang={lang} onAdd={addToCart} />
-        <Contact t={t.contact} isRTL={isRTL} />
+        <Contact lang={lang} />
       </main>
 
       <Footer t={t.nav} lang={lang} />

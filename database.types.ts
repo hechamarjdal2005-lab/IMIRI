@@ -11,7 +11,4 @@ export interface ProductRow {
   price: number;
   price_label: string;
   image_url: string;
-  category: string | null;
-  stock: number;
-  is_featured: boolean;
 }

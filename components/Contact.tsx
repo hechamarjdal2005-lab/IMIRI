@@ -1,79 +1,212 @@
-
-import React from 'react';
-import { MessageSquare, Mail, MapPin, Instagram, Facebook } from 'lucide-react';
-import { SOCIAL_LINKS } from '../constants';
+import React, { useEffect, useState } from 'react';
+import { supabase } from '../supabaseClient';
+import type { Contact } from '../types';
+import { transformContact } from '../utils/transformContact';
+import { MessageSquare, Mail, MapPin, Facebook, Instagram } from 'lucide-react';
 
 interface ContactProps {
-  t: {
-    title: string;
-    whatsapp: string;
-    email: string;
-    location: string;
-  };
-  isRTL: boolean;
+  lang: 'en' | 'fr' | 'ar' | 'ama';
 }
 
-const Contact: React.FC<ContactProps> = ({ t, isRTL }) => {
+const Contact: React.FC<ContactProps> = ({ lang }) => {
+  const [contact, setContact] = useState<Contact | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchContact();
+  }, []);
+
+  const fetchContact = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('contact')
+        .select('*')
+        .single();
+
+      if (error) throw error;
+
+      if (data) {
+        const transformed = transformContact(data);
+        setContact(transformed);
+      }
+    } catch (err) {
+      console.error('Error fetching contact:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <section id="contact" className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <div className="animate-pulse">
+            <div className="h-10 bg-slate-200 rounded w-64 mx-auto mb-8"></div>
+            <div className="space-y-4 max-w-md mx-auto">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="h-20 bg-slate-100 rounded-xl"></div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!contact) {
+    return (
+      <section id="contact" className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <p className="text-red-500">Failed to load contact information</p>
+        </div>
+      </section>
+    );
+  }
+
+  const getTitle = () => {
+    switch (lang) {
+      case 'en': return contact.title_en;
+      case 'fr': return contact.title_fr;
+      case 'ar': return contact.title_ar;
+      case 'ama': return contact.title_ama;
+      default: return contact.title_en;
+    }
+  };
+
+  const getLocation = () => {
+    switch (lang) {
+      case 'en': return contact.location_en;
+      case 'fr': return contact.location_fr;
+      case 'ar': return contact.location_ar;
+      case 'ama': return contact.location_ama;
+      default: return contact.location_en;
+    }
+  };
+
+  // Fallback OpenStreetMap URL if no embed URL is set
+  const fallbackMapSrc = "https://www.openstreetmap.org/export/embed.html?bbox=-9.65%2C30.38%2C-9.55%2C30.46&layer=mapnik&marker=30.4202%2C-9.5970";
+
   return (
     <section id="contact" className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-16">
-          <div>
-            <h2 className="text-4xl font-bold text-slate-800 mb-8">{t.title}</h2>
-            
-            <div className="space-y-8">
-              <div className={`flex items-start ${isRTL ? 'flex-row-reverse space-x-reverse' : 'flex-row'} space-x-4`}>
-                <div className="p-4 bg-emerald-100 rounded-2xl text-emerald-600">
-                  <MessageSquare size={24} />
-                </div>
-                <div>
-                  <h4 className="font-bold text-slate-800">{t.whatsapp}</h4>
-                  <p className="text-slate-500">{SOCIAL_LINKS.whatsapp}</p>
-                </div>
-              </div>
+        <h2 className="text-4xl font-bold text-slate-800 mb-12 text-center">
+          {getTitle()}
+        </h2>
 
-              <div className={`flex items-start ${isRTL ? 'flex-row-reverse space-x-reverse' : 'flex-row'} space-x-4`}>
-                <div className="p-4 bg-emerald-100 rounded-2xl text-emerald-600">
-                  <Mail size={24} />
-                </div>
-                <div>
-                  <h4 className="font-bold text-slate-800">{t.email}</h4>
-                  <p className="text-slate-500">{SOCIAL_LINKS.email}</p>
-                </div>
+        <div className="grid lg:grid-cols-2 gap-12 items-start">
+          {/* Contact Info - Left Side */}
+          <div className="space-y-6">
+            {/* Phone / WhatsApp */}
+            <div className="flex items-center space-x-4 rtl:space-x-reverse p-6 rounded-2xl hover:bg-slate-50 transition-colors bg-slate-50/50">
+              <div className="w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-600 flex-shrink-0">
+                <MessageSquare size={24} />
               </div>
-
-              <div className={`flex items-start ${isRTL ? 'flex-row-reverse space-x-reverse' : 'flex-row'} space-x-4`}>
-                <div className="p-4 bg-emerald-100 rounded-2xl text-emerald-600">
-                  <MapPin size={24} />
-                </div>
-                <div>
-                  <h4 className="font-bold text-slate-800">{t.location}</h4>
-                  <p className="text-slate-500">Agadir, Morocco</p>
-                </div>
+              <div>
+                <p className="font-semibold text-slate-800 text-lg">Chat with us</p>
+                <a 
+                  href={`https://wa.me/${contact.whatsapp_number}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-slate-500 hover:text-emerald-600 transition-colors"
+                >
+                  {contact.phone}
+                </a>
               </div>
             </div>
 
-            <div className="mt-12 flex space-x-6 rtl:space-x-reverse">
-              <a href={SOCIAL_LINKS.facebook} className="w-12 h-12 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-emerald-600 hover:text-white transition-all">
-                <Facebook size={20} />
-              </a>
-              <a href={SOCIAL_LINKS.instagram} className="w-12 h-12 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-emerald-600 hover:text-white transition-all">
-                <Instagram size={20} />
-              </a>
+            {/* Email */}
+            <div className="flex items-center space-x-4 rtl:space-x-reverse p-6 rounded-2xl hover:bg-slate-50 transition-colors bg-slate-50/50">
+              <div className="w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-600 flex-shrink-0">
+                <Mail size={24} />
+              </div>
+              <div>
+                <p className="font-semibold text-slate-800 text-lg">Email Us</p>
+                <a 
+                  href={`mailto:${contact.email}`}
+                  className="text-slate-500 hover:text-emerald-600 transition-colors"
+                >
+                  {contact.email}
+                </a>
+              </div>
+            </div>
+
+            {/* Location */}
+            <div className="flex items-center space-x-4 rtl:space-x-reverse p-6 rounded-2xl hover:bg-slate-50 transition-colors bg-slate-50/50">
+              <div className="w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-600 flex-shrink-0">
+                <MapPin size={24} />
+              </div>
+              <div>
+                <p className="font-semibold text-slate-800 text-lg">Our Location</p>
+                <p className="text-slate-500">{getLocation()}</p>
+                {contact.google_maps_url && (
+                  <a 
+                    href={contact.google_maps_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-emerald-600 text-sm hover:text-emerald-700 inline-flex items-center mt-2 font-medium"
+                  >
+                    Open in Google Maps →
+                  </a>
+                )}
+              </div>
+            </div>
+
+            {/* Social Media */}
+            <div className="pt-6">
+              <p className="font-semibold text-slate-800 mb-4 text-lg">Follow Us</p>
+              <div className="flex space-x-4 rtl:space-x-reverse">
+                {contact.facebook_url && (
+                  <a 
+                    href={contact.facebook_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 hover:bg-emerald-600 hover:text-white transition-all"
+                  >
+                    <Facebook size={20} />
+                  </a>
+                )}
+                {contact.instagram_url && (
+                  <a 
+                    href={contact.instagram_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 hover:bg-emerald-600 hover:text-white transition-all"
+                  >
+                    <Instagram size={20} />
+                  </a>
+                )}
+              </div>
             </div>
           </div>
 
-          <div className="h-[400px] rounded-3xl overflow-hidden shadow-xl border-8 border-slate-50">
-            {/* Using a static image as a placeholder for the map */}
-            <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d110043.19323547119!2d-9.610574013446051!3d30.4132174301724!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xdb3b6e941445173%3A0xa0f997235a9d6896!2sAgadir%2080000%2C%20Morocco!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s" 
-              width="100%" 
-              height="100%" 
-              style={{ border: 0 }} 
-              allowFullScreen 
-              loading="lazy" 
-              referrerPolicy="no-referrer-when-downgrade"
-            ></iframe>
+          {/* Map - Right Side */}
+          <div className="relative">
+            <div className="sticky top-24">
+              <div className="rounded-2xl overflow-hidden shadow-xl border-4 border-emerald-100 bg-slate-100">
+                <iframe
+                  src={contact.map_embed_url || fallbackMapSrc}
+                  width="100%"
+                  height="450"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Our Location"
+                  className="w-full"
+                />
+              </div>
+              <div className="mt-4 text-center">
+                <a 
+                  href={contact.google_maps_url || '#'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center px-6 py-3 bg-emerald-600 text-white rounded-xl font-semibold hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-600/20"
+                >
+                  <MapPin size={20} className="mr-2" />
+                  Get Directions
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>

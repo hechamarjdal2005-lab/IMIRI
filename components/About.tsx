@@ -1,59 +1,164 @@
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { supabase } from '../supabaseClient';
+import type { About } from '../types';
+import { transformAbout } from '../utils/transformAbout';
 import { Leaf, Award, Users, MapPin } from 'lucide-react';
 
 interface AboutProps {
-  t: {
-    title: string;
-    description: string;
-    values: {
-      natural: string;
-      authentic: string;
-      empowerment: string;
-      local: string;
-    };
-  };
+  lang: 'en' | 'fr' | 'ar' | 'ama';
 }
 
-const About: React.FC<AboutProps> = ({ t }) => {
-  const valueIcons = [
-    { icon: <Leaf className="text-emerald-600" size={32} />, label: t.values.natural },
-    { icon: <Award className="text-emerald-600" size={32} />, label: t.values.authentic },
-    { icon: <Users className="text-emerald-600" size={32} />, label: t.values.empowerment },
-    { icon: <MapPin className="text-emerald-600" size={32} />, label: t.values.local },
-  ];
+const About: React.FC<AboutProps> = ({ lang }) => {
+  const [about, setAbout] = useState<About | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchAbout();
+  }, []);
+
+  const fetchAbout = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('about')
+        .select('*')
+        .single();
+
+      if (error) throw error;
+
+      if (data) {
+        const transformed = transformAbout(data);
+        setAbout(transformed);
+      }
+    } catch (err) {
+      console.error('Error fetching about:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <section id="about" className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <div className="animate-pulse">
+            <div className="h-10 bg-slate-200 rounded w-48 mx-auto mb-8"></div>
+            <div className="h-4 bg-slate-100 rounded w-full max-w-2xl mx-auto mb-4"></div>
+            <div className="h-4 bg-slate-100 rounded w-full max-w-2xl mx-auto"></div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!about) {
+    return (
+      <section id="about" className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <p className="text-red-500">Failed to load about information</p>
+        </div>
+      </section>
+    );
+  }
+
+  const getSectionLabel = () => {
+    switch (lang) {
+      case 'en': return about.section_label_en;
+      case 'fr': return about.section_label_fr;
+      case 'ar': return about.section_label_ar;
+      case 'ama': return about.section_label_ama;
+      default: return about.section_label_en;
+    }
+  };
+
+  const getStoryTitle = () => {
+    switch (lang) {
+      case 'en': return about.story_title_en;
+      case 'fr': return about.story_title_fr;
+      case 'ar': return about.story_title_ar;
+      case 'ama': return about.story_title_ama;
+      default: return about.story_title_en;
+    }
+  };
+
+  const getStoryDescription = () => {
+    switch (lang) {
+      case 'en': return about.story_description_en;
+      case 'fr': return about.story_description_fr;
+      case 'ar': return about.story_description_ar;
+      case 'ama': return about.story_description_ama;
+      default: return about.story_description_en;
+    }
+  };
+
+  const getBadgeText = () => {
+    switch (lang) {
+      case 'en': return about.badge_text_en;
+      case 'fr': return about.badge_text_fr;
+      case 'ar': return about.badge_text_ar;
+      case 'ama': return about.badge_text_ama;
+      default: return about.badge_text_en;
+    }
+  };
+
+  const getIconComponent = (iconName: string) => {
+    switch (iconName) {
+      case 'leaf': return <Leaf size={24} />;
+      case 'award': return <Award size={24} />;
+      case 'users': return <Users size={24} />;
+      case 'map-pin': return <MapPin size={24} />;
+      default: return <Leaf size={24} />;
+    }
+  };
+
+  const getValueText = (value: any) => {
+    switch (lang) {
+      case 'en': return value.text_en;
+      case 'fr': return value.text_fr;
+      case 'ar': return value.text_ar;
+      case 'ama': return value.text_ama;
+      default: return value.text_en;
+    }
+  };
 
   return (
     <section id="about" className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Left Content */}
           <div>
-            <span className="text-emerald-600 font-bold tracking-widest uppercase text-sm">{t.title}</span>
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mt-4 mb-6">{t.title}</h2>
-            <p className="text-lg text-slate-600 leading-relaxed mb-8">
-              {t.description}
+            <p className="text-emerald-600 font-semibold text-sm mb-2">
+              {getSectionLabel()}
             </p>
-            <div className="grid grid-cols-2 gap-6">
-              {valueIcons.map((item, idx) => (
-                <div key={idx} className="flex flex-col items-center p-6 bg-emerald-50 rounded-2xl text-center">
-                  <div className="mb-4">{item.icon}</div>
-                  <span className="font-semibold text-slate-800 text-sm">{item.label}</span>
+            <h2 className="text-4xl font-bold text-slate-800 mb-6">{getStoryTitle()}</h2>
+            <p className="text-slate-600 leading-relaxed mb-8">
+              {getStoryDescription()}
+            </p>
+
+            {/* Values Grid */}
+            <div className="grid sm:grid-cols-2 gap-4">
+              {about.values.map((value, index) => (
+                <div 
+                  key={index}
+                  className="p-6 bg-emerald-50/50 rounded-2xl flex flex-col items-center text-center hover:bg-emerald-50 transition-colors"
+                >
+                  <div className="text-emerald-600 mb-3">
+                    {getIconComponent(value.icon)}
+                  </div>
+                  <p className="text-slate-700 font-medium">{getValueText(value)}</p>
                 </div>
               ))}
             </div>
           </div>
+
+          {/* Right Image */}
           <div className="relative">
-            <div className="aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl">
-              <img 
-                src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&q=80&w=1200" 
-                alt="Our cooperative" 
-                className="w-full h-full object-cover"
-              />
-            </div>
-            {/* Artistic badge */}
-            <div className="absolute -bottom-8 -left-8 bg-emerald-700 text-white p-8 rounded-2xl hidden lg:block shadow-xl">
-              <p className="text-3xl font-bold">100%</p>
-              <p className="text-sm uppercase tracking-wider">Natural & Organic</p>
+            <img 
+              src={about.image_url} 
+              alt={getStoryTitle()}
+              className="rounded-3xl w-full h-[600px] object-cover shadow-2xl"
+            />
+            <div className="absolute bottom-8 left-8 bg-emerald-600 text-white p-6 rounded-2xl shadow-lg">
+              <p className="text-2xl font-bold">{getBadgeText()}</p>
             </div>
           </div>
         </div>

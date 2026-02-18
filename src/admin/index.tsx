@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../supabaseClient';
 import { AdminLayout } from './AdminLayout';
-import { AdminLogin } from './Adminlogin';
+import { AdminLogin } from './AdminLogin';
 import { ProductsAdmin } from './ProductsAdmin';
 import { ContactAdmin } from './ContactAdmin';
 import { AboutAdmin } from './AboutAdmin';
+import { HeroAdmin } from './HeroAdmin';
 import type { AdminLang } from './AdminLayout';
 
 export const AdminDashboard: React.FC = () => {
@@ -57,6 +58,7 @@ export const AdminDashboard: React.FC = () => {
       adminLang={adminLang}
       setAdminLang={setAdminLang}
     >
+      {activeTab === 'hero'     && <HeroAdmin     adminLang={adminLang} />}
       {activeTab === 'products' && <ProductsAdmin adminLang={adminLang} />}
       {activeTab === 'contact'  && <ContactAdmin  adminLang={adminLang} />}
       {activeTab === 'about'    && <AboutAdmin    adminLang={adminLang} />}

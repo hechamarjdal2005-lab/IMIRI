@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Package, Phone, Info, LogOut, Menu, X, Globe } from 'lucide-react';
+import { Package, Phone, Info, LogOut, Menu, X, Globe, ImageIcon } from 'lucide-react';
 
 // ─── Traductions FR / AR ───────────────────────────────────────────────
 const i18n = {
@@ -8,6 +8,7 @@ const i18n = {
     products: 'Produits',
     contact: 'Contact',
     about: 'À propos',
+    hero: 'Hero / Accueil',
     logout: 'Déconnexion',
     toggle: 'العربية',
   },
@@ -16,6 +17,7 @@ const i18n = {
     products: 'المنتجات',
     contact: 'الاتصال',
     about: 'من نحن',
+    hero: 'الصفحة الرئيسية (Hero)',
     logout: 'تسجيل الخروج',
     toggle: 'Français',
   },
@@ -43,6 +45,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
   const isRTL = adminLang === 'ar';
 
   const menuItems = [
+    { id: 'hero',     label: t.hero,     icon: <ImageIcon size={20} /> },
     { id: 'products', label: t.products, icon: <Package size={20} /> },
     { id: 'contact',  label: t.contact,  icon: <Phone size={20} /> },
     { id: 'about',    label: t.about,    icon: <Info size={20} /> },

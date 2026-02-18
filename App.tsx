@@ -37,7 +37,7 @@ const App: React.FC = () => {
       }
       return [...prev, { product, quantity: 1 }];
     });
-    setIsCartOpen(true);
+    // ← setIsCartOpen(true) wqa3 — cart ma yftahch automatiquement
   };
 
   const removeFromCart = (productId: string) => {

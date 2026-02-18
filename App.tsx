@@ -9,12 +9,14 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
 import CartDrawer from './components/CartDrawer';
+import { AdminDashboard } from './src/admin/index';
 
 const App: React.FC = () => {
   const [lang, setLang] = useState<Language>('en');
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  
+  const [isAdminMode, setIsAdminMode] = useState(false);
+
   const t = translations[lang];
   const isRTL = lang === 'ar';
 
@@ -27,9 +29,9 @@ const App: React.FC = () => {
     setCart(prev => {
       const existing = prev.find(item => item.product.id === product.id);
       if (existing) {
-        return prev.map(item => 
-          item.product.id === product.id 
-            ? { ...item, quantity: item.quantity + 1 } 
+        return prev.map(item =>
+          item.product.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
             : item
         );
       }
@@ -45,8 +47,7 @@ const App: React.FC = () => {
   const updateQuantity = (productId: string, delta: number) => {
     setCart(prev => prev.map(item => {
       if (item.product.id === productId) {
-        const newQty = Math.max(1, item.quantity + delta);
-        return { ...item, quantity: newQty };
+        return { ...item, quantity: Math.max(1, item.quantity + delta) };
       }
       return item;
     }));
@@ -54,16 +55,31 @@ const App: React.FC = () => {
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
+  // ── Mode Admin ─────────────────────────────────────────────
+  if (isAdminMode) {
+    return <AdminDashboard />;
+  }
+
+  // ── Site principal ─────────────────────────────────────────
   return (
     <div className={`min-h-screen font-sans ${isRTL ? 'font-arabic' : lang === 'ama' ? 'font-tifinagh' : ''}`}>
-      <Navbar 
-        currentLang={lang} 
-        setLang={setLang} 
-        t={t.nav} 
-        cartCount={cartCount} 
-        onCartClick={() => setIsCartOpen(true)} 
+      {/* Bouton admin caché */}
+      <button
+        onClick={() => setIsAdminMode(true)}
+        className="fixed bottom-2 left-2 opacity-10 hover:opacity-100 z-50 text-xs bg-gray-800 text-white p-2 rounded transition-opacity"
+        title="Admin"
+      >
+        ⚙
+      </button>
+
+      <Navbar
+        currentLang={lang}
+        setLang={setLang}
+        t={t.nav}
+        cartCount={cartCount}
+        onCartClick={() => setIsCartOpen(true)}
       />
-      
+
       <main>
         <Hero t={t.hero} isRTL={isRTL} />
         <About lang={lang} />
@@ -74,9 +90,9 @@ const App: React.FC = () => {
       <Footer t={t.nav} lang={lang} />
       <FloatingWhatsApp />
 
-      <CartDrawer 
-        isOpen={isCartOpen} 
-        onClose={() => setIsCartOpen(false)} 
+      <CartDrawer
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
         cart={cart}
         onRemove={removeFromCart}
         onUpdateQty={updateQuantity}

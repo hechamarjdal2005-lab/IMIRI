@@ -81,7 +81,7 @@ const App: React.FC = () => {
       />
 
       <main>
-        <Hero t={t.hero} isRTL={isRTL} />
+        <Hero t={t.hero} isRTL={isRTL} lang={lang} />
         <About lang={lang} />
         <Products t={t.products} lang={lang} onAdd={addToCart} />
         <Contact lang={lang} />

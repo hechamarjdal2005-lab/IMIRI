@@ -1,5 +1,5 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient';
 import { Language } from '../types';
 import { Menu, X, Globe, ChevronDown, ShoppingBasket } from 'lucide-react';
 
@@ -16,9 +16,16 @@ interface NavbarProps {
   onCartClick: () => void;
 }
 
+interface SiteSettings {
+  logo_url: string | null;
+  logo_height: string;
+  site_name: string;
+}
+
 const Navbar: React.FC<NavbarProps> = ({ currentLang, setLang, t, cartCount, onCartClick }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
+  const [siteSettings, setSiteSettings] = useState<SiteSettings | null>(null);
 
   const languages: { code: Language; label: string }[] = [
     { code: 'en', label: 'English' },
@@ -27,15 +34,62 @@ const Navbar: React.FC<NavbarProps> = ({ currentLang, setLang, t, cartCount, onC
     { code: 'ama', label: 'ⵜⴰⵎⴰⵣⵉⵖⵜ' },
   ];
 
+  useEffect(() => {
+    fetchSiteSettings();
+  }, [currentLang]);
+
+  const fetchSiteSettings = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('hero_background')
+        .select('logo_url, logo_height, site_name_en, site_name_fr, site_name_ar, site_name_ama')
+        .eq('is_active', true)
+        .single();
+
+      if (error) throw error;
+
+      if (data) {
+        let siteName = data.site_name_en;
+        switch (currentLang) {
+          case 'en': siteName = data.site_name_en; break;
+          case 'fr': siteName = data.site_name_fr; break;
+          case 'ar': siteName = data.site_name_ar; break;
+          case 'ama': siteName = data.site_name_ama; break;
+        }
+
+        setSiteSettings({
+          logo_url: data.logo_url,
+          logo_height: data.logo_height || '40px',
+          site_name: siteName,
+        });
+      }
+    } catch (err) {
+      console.error('Error fetching site settings:', err);
+    }
+  };
+
   return (
     <nav className="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-emerald-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
           {/* Logo */}
-          <div className="flex-shrink-0 flex items-center">
+          <div className="flex-shrink-0 flex items-center cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
             <div className="flex items-center space-x-2 rtl:space-x-reverse">
-              <img src="https://i.ibb.co/VWVv264/logo-imiri.png" alt="IMIRI" className="h-12 w-auto hidden" />
-              <span className="text-2xl font-bold text-emerald-700 tracking-wider">IMIRI</span>
+              {siteSettings?.logo_url ? (
+                <img 
+                  src={siteSettings.logo_url} 
+                  alt={siteSettings.site_name}
+                  style={{ height: siteSettings.logo_height }}
+                  className="object-contain"
+                />
+              ) : (
+                <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold text-lg">I</span>
+                </div>
+              )}
+              <span className="text-2xl font-bold text-emerald-700 tracking-wider">
+                {siteSettings?.site_name || 'IMIRI'}
+              </span>
             </div>
           </div>
 

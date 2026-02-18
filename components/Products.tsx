@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { supabase } from '../src/supabaseClient';
+import { supabase } from '../supabaseClient';
 import { Language, Product } from '../types';
 import { transformProduct } from '../utils/transformProduct';
 import { Plus } from 'lucide-react';

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { supabase } from '../src/supabaseClient';
+import { supabase } from '../supabaseClient';
 import type { Contact } from '../types';
 import { transformContact } from '../utils/transformContact';
 import { MessageSquare, Mail, MapPin, Facebook, Instagram } from 'lucide-react';

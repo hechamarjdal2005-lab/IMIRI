@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../../supabaseClient';
 import { Save, Loader2, Plus, Trash2, Upload, X } from 'lucide-react';
 import type { AdminLang } from './AdminLayout';
 

@@ -105,3 +105,30 @@ export interface Contact {
   whatsapp_number: string | null;
   map_embed_url: string | null;
 }
+
+export interface HeroBackground {
+  id: number;
+  image_url: string;
+  overlay_color: string;
+  overlay_enabled: boolean;
+  logo_url: string | null;
+  logo_height: string;
+  site_name_en: string;
+  site_name_fr: string;
+  site_name_ar: string;
+  site_name_ama: string;
+  title_en: string;
+  title_fr: string;
+  title_ar: string;
+  title_ama: string;
+  subtitle_en: string | null;
+  subtitle_fr: string | null;
+  subtitle_ar: string | null;
+  subtitle_ama: string | null;
+  cta_text_en: string;
+  cta_text_fr: string;
+  cta_text_ar: string;
+  cta_text_ama: string;
+  cta_link: string;
+  is_active: boolean;
+}

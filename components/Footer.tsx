@@ -1,6 +1,6 @@
 import React from 'react';
 import { Language } from '../types';
-import { Leaf, MapPin, ArrowUp, Mail, Phone } from 'lucide-react';
+import { Leaf, ArrowUp } from 'lucide-react';
 
 interface FooterProps {
   t: {
@@ -60,7 +60,6 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
         .ft-separator {
           height: 1px;
           background: linear-gradient(to right, transparent, rgba(201,168,76,0.4), transparent);
-          margin-bottom: 0;
         }
 
         .ft-inner {
@@ -72,14 +71,11 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
         /* ── MAIN GRID ── */
         .ft-grid-main {
           display: grid;
-          grid-template-columns: 1.6fr 1fr 1fr;
+          grid-template-columns: 1.6fr 1fr;
           gap: 56px;
           margin-bottom: 56px;
         }
-        @media (max-width: 900px) {
-          .ft-grid-main { grid-template-columns: 1fr 1fr; gap: 40px; }
-        }
-        @media (max-width: 580px) {
+        @media (max-width: 700px) {
           .ft-grid-main { grid-template-columns: 1fr; gap: 32px; }
           .ft-inner { padding: 56px 24px 32px; }
         }
@@ -115,20 +111,7 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
         .ft-brand-desc {
           font-size: 0.85rem; font-weight: 300;
           line-height: 1.85; color: rgba(255,255,255,0.4);
-          max-width: 340px; margin-bottom: 28px;
-        }
-
-        .ft-brand-info { display: flex; flex-direction: column; gap: 10px; }
-        .ft-brand-info-item {
-          display: flex; align-items: center; gap: 10px;
-          font-size: 0.8rem; color: rgba(255,255,255,0.45);
-        }
-        .ft-brand-info-icon {
-          width: 28px; height: 28px; flex-shrink: 0;
-          background: rgba(201,168,76,0.08);
-          border: 1px solid rgba(201,168,76,0.15);
-          display: flex; align-items: center; justify-content: center;
-          color: rgba(201,168,76,0.6);
+          max-width: 340px; margin-bottom: 0;
         }
 
         /* ── COL HEADING ── */
@@ -154,7 +137,6 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
           color: rgba(255,255,255,0.45); text-decoration: none;
           border-bottom: 1px solid rgba(255,255,255,0.04);
           transition: color 0.2s, padding-left 0.2s;
-          position: relative;
         }
         .ft-nav-item a::before {
           content: '';
@@ -162,10 +144,7 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
           background: rgba(201,168,76,0.3); flex-shrink: 0;
           transition: background 0.2s, transform 0.2s;
         }
-        .ft-nav-item a:hover {
-          color: rgba(255,255,255,0.85);
-          padding-left: 6px;
-        }
+        .ft-nav-item a:hover { color: rgba(255,255,255,0.85); padding-left: 6px; }
         .ft-nav-item a:hover::before { background: #c9a84c; transform: scale(1.4); }
 
         /* ── BOTTOM BAR ── */
@@ -175,13 +154,11 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
           display: flex; align-items: center; justify-content: space-between;
           flex-wrap: wrap; gap: 12px;
         }
-
         .ft-copyright {
           font-size: 0.72rem; color: rgba(255,255,255,0.2);
           letter-spacing: 0.05em;
         }
         .ft-copyright strong { color: rgba(201,168,76,0.5); font-weight: 600; }
-
         .ft-made {
           font-size: 0.72rem; color: rgba(255,255,255,0.2);
           display: flex; align-items: center; gap: 6px;
@@ -192,8 +169,7 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
         .ft-scroll-btn {
           position: fixed; bottom: 28px; right: 28px; z-index: 99;
           width: 44px; height: 44px;
-          background: #c9a84c;
-          color: #0a1f0e;
+          background: #c9a84c; color: #0a1f0e;
           border: none; cursor: pointer;
           display: flex; align-items: center; justify-content: center;
           clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
@@ -237,27 +213,6 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
                   'منتجات مغربية طبيعية أصيلة، مصنوعة بشغف من قِبَل أيدٍ محلية منذ 2010.'
                 )}
               </p>
-
-              <div className="ft-brand-info">
-                <div className="ft-brand-info-item">
-                  <div className="ft-brand-icon" style={{ width: 28, height: 28 }}>
-                    <MapPin size={13} strokeWidth={1.5} />
-                  </div>
-                  <span>Agadir, Morocco — 80000</span>
-                </div>
-                <div className="ft-brand-info-item">
-                  <div className="ft-brand-icon" style={{ width: 28, height: 28 }}>
-                    <Mail size={13} strokeWidth={1.5} />
-                  </div>
-                  <span>contact@imiri.ma</span>
-                </div>
-                <div className="ft-brand-info-item">
-                  <div className="ft-brand-icon" style={{ width: 28, height: 28 }}>
-                    <Phone size={13} strokeWidth={1.5} />
-                  </div>
-                  <span>+212 6XX XXX XXX</span>
-                </div>
-              </div>
             </div>
 
             {/* ── NAV LINKS ── */}
@@ -277,28 +232,6 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
                 ].map((link, i) => (
                   <li key={i} className="ft-nav-item">
                     <a href={link.href}>{link.label}</a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* ── VALUES ── */}
-            <div>
-              <div className="ft-col-heading">
-                <div className="ft-col-heading-line" />
-                <span className="ft-col-heading-text">
-                  {tr('Our Values', 'Nos Valeurs', 'قيمنا')}
-                </span>
-              </div>
-              <ul className="ft-nav-list">
-                {[
-                  tr('100% Natural', '100% Naturel',      '١٠٠٪ طبيعي'),
-                  tr('Handcrafted',  'Artisanal',          'صنع يدوي'),
-                  tr('Organic',      'Bio certifié',       'عضوي معتمد'),
-                  tr('Local Roots',  'Racines locales',    'جذور محلية'),
-                ].map((val, i) => (
-                  <li key={i} className="ft-nav-item">
-                    <a href="#about">{val}</a>
                   </li>
                 ))}
               </ul>

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Package, Phone, Info, LogOut, Menu, X, Globe, ImageIcon } from 'lucide-react';
 
-// ─── Traductions FR / AR ───────────────────────────────────────────────
 const i18n = {
   fr: {
     title: 'Administration',
@@ -51,99 +50,132 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
     { id: 'about',    label: t.about,    icon: <Info size={20} /> },
   ];
 
-  const Sidebar = () => (
-    <aside
-      className={`
-        fixed inset-y-0 z-50 w-64 bg-white shadow-xl flex flex-col
-        transform transition-transform duration-300
-        ${isRTL ? 'left-auto right-0' : 'right-auto left-0'}
-        ${sidebarOpen
-          ? 'translate-x-0'
-          : isRTL ? 'translate-x-full' : '-translate-x-full'}
-        md:translate-x-0 md:static md:inset-auto
-      `}
-      dir={isRTL ? 'rtl' : 'ltr'}
-    >
-      {/* Header */}
-      <div className="flex items-center justify-between p-5 border-b bg-blue-600">
-        <h1 className="text-lg font-bold text-white">{t.title}</h1>
-        <button onClick={() => setSidebarOpen(false)} className="md:hidden text-white">
-          <X size={22} />
-        </button>
-      </div>
-
-      {/* Nav */}
-      <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-        {menuItems.map(item => (
-          <button
-            key={item.id}
-            onClick={() => { setActiveTab(item.id); setSidebarOpen(false); }}
-            className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl transition-colors text-sm font-medium
-              ${activeTab === item.id
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'text-gray-600 hover:bg-gray-100'}`}
-          >
-            {item.icon}
-            {item.label}
-          </button>
-        ))}
-      </nav>
-
-      {/* Footer */}
-      <div className="p-4 border-t space-y-2">
-        {/* Language toggle */}
-        <button
-          onClick={() => setAdminLang(adminLang === 'fr' ? 'ar' : 'fr')}
-          className="flex items-center gap-2 w-full px-4 py-2.5 rounded-xl text-sm text-gray-600 hover:bg-gray-100 transition-colors"
-        >
-          <Globe size={18} />
-          {t.toggle}
-        </button>
-        {/* Logout */}
-        <button
-          onClick={onLogout}
-          className="flex items-center gap-2 w-full px-4 py-2.5 rounded-xl text-sm text-red-600 hover:bg-red-50 transition-colors"
-        >
-          <LogOut size={18} />
-          {t.logout}
-        </button>
-      </div>
-    </aside>
-  );
-
   return (
-    <div className={`min-h-screen bg-gray-100 flex ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
-      <Sidebar />
+    <div
+      dir={isRTL ? 'rtl' : 'ltr'}
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        minHeight: '100vh',
+        background: '#f3f4f6',
+        position: 'relative',
+      }}
+    >
+      {/* ─── SIDEBAR ─── */}
+      <aside
+        style={{
+          width: 256,
+          minWidth: 256,
+          background: '#fff',
+          boxShadow: '2px 0 12px rgba(0,0,0,0.08)',
+          display: 'flex',
+          flexDirection: 'column',
+          position: 'relative',
+          zIndex: 10,
+          flexShrink: 0,
+        }}
+      >
+        {/* Header */}
+        <div style={{
+          padding: '20px 20px',
+          background: '#2563eb',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}>
+          <h1 style={{ color: '#fff', fontWeight: 700, fontSize: 18, margin: 0 }}>
+            {t.title}
+          </h1>
+        </div>
 
-      {/* Main */}
-      <main className="flex-1 flex flex-col overflow-hidden">
-        {/* Mobile header */}
-        <header className="md:hidden flex items-center justify-between bg-white border-b px-4 py-3 shadow-sm">
-          <button onClick={() => setSidebarOpen(true)}>
-            <Menu size={24} className="text-gray-700" />
+        {/* Nav items */}
+        <nav style={{ flex: 1, padding: '16px 12px', display: 'flex', flexDirection: 'column', gap: 4 }}>
+          {menuItems.map(item => (
+            <button
+              key={item.id}
+              onClick={() => setActiveTab(item.id)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 12,
+                width: '100%',
+                padding: '12px 16px',
+                borderRadius: 12,
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: 14,
+                fontWeight: 500,
+                textAlign: isRTL ? 'right' : 'left',
+                transition: 'all 0.15s ease',
+                background: activeTab === item.id ? '#2563eb' : 'transparent',
+                color: activeTab === item.id ? '#fff' : '#4b5563',
+              }}
+              onMouseEnter={e => {
+                if (activeTab !== item.id)
+                  (e.currentTarget as HTMLButtonElement).style.background = '#f3f4f6';
+              }}
+              onMouseLeave={e => {
+                if (activeTab !== item.id)
+                  (e.currentTarget as HTMLButtonElement).style.background = 'transparent';
+              }}
+            >
+              {item.icon}
+              {item.label}
+            </button>
+          ))}
+        </nav>
+
+        {/* Footer */}
+        <div style={{ padding: '12px', borderTop: '1px solid #e5e7eb', display: 'flex', flexDirection: 'column', gap: 4 }}>
+          {/* Language toggle */}
+          <button
+            onClick={() => setAdminLang(adminLang === 'fr' ? 'ar' : 'fr')}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 10,
+              width: '100%', padding: '10px 16px',
+              borderRadius: 10, border: 'none', cursor: 'pointer',
+              fontSize: 13, color: '#4b5563', background: 'transparent',
+              textAlign: isRTL ? 'right' : 'left',
+            }}
+          >
+            <Globe size={17} />
+            {t.toggle}
           </button>
-          <span className="font-bold text-gray-800 text-sm">{t.title}</span>
-          <div className="w-6" />
-        </header>
 
-        <div className="flex-1 overflow-y-auto p-4 md:p-8">
-          <div className="bg-white rounded-2xl shadow-sm p-6 min-h-[500px]">
+          {/* Logout */}
+          <button
+            onClick={onLogout}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 10,
+              width: '100%', padding: '10px 16px',
+              borderRadius: 10, border: 'none', cursor: 'pointer',
+              fontSize: 13, color: '#dc2626', background: 'transparent',
+              textAlign: isRTL ? 'right' : 'left',
+            }}
+          >
+            <LogOut size={17} />
+            {t.logout}
+          </button>
+        </div>
+      </aside>
+
+      {/* ─── MAIN CONTENT ─── */}
+      <main style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', minWidth: 0 }}>
+        <div style={{ flex: 1, overflowY: 'auto', padding: '32px' }}>
+          <div style={{
+            background: '#fff',
+            borderRadius: 16,
+            boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
+            padding: '32px',
+            minHeight: 500,
+          }}>
             {children}
           </div>
         </div>
       </main>
-
-      {/* Mobile overlay */}
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 z-40 md:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
     </div>
   );
 };
 
-// Export i18n for use in child components
 export { i18n };
 export type AdminLang = 'fr' | 'ar';

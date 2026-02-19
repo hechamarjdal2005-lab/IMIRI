@@ -16,7 +16,6 @@ const App: React.FC = () => {
   const [cart, setCart]           = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isAdminMode, setIsAdminMode] = useState(false);
-  const [adminTaps, setAdminTaps] = useState(0);
 
   const t     = translations[lang];
   const isRTL = lang === 'ar';
@@ -25,17 +24,6 @@ const App: React.FC = () => {
     document.documentElement.dir  = isRTL ? 'rtl' : 'ltr';
     document.documentElement.lang = lang;
   }, [lang, isRTL]);
-
-  // 5 taps rapides pour ouvrir admin (mobile-friendly)
-  const handleAdminTap = () => {
-    const next = adminTaps + 1;
-    setAdminTaps(next);
-    if (next >= 5) {
-      setIsAdminMode(true);
-      setAdminTaps(0);
-    }
-    setTimeout(() => setAdminTaps(0), 3000);
-  };
 
   const addToCart = (product: Product) => {
     setCart(prev => {
@@ -68,11 +56,10 @@ const App: React.FC = () => {
   if (isAdminMode) {
     return (
       <div>
-        {/* Back button */}
         <button
           onClick={() => setIsAdminMode(false)}
           style={{
-            position: 'fixed', top: 12, left: 12, zIndex: 9999,
+            position: 'fixed', top: 12, left: 200, zIndex: 9999,
             display: 'flex', alignItems: 'center', gap: 6,
             padding: '8px 16px',
             background: '#0d2b10',
@@ -95,11 +82,11 @@ const App: React.FC = () => {
 
       {/* ── Admin trigger button ── */}
       <button
-        onClick={handleAdminTap}
+        onClick={() => setIsAdminMode(true)}
         title="Admin"
         style={{
           position: 'fixed',
-          bottom: 80,        /* au-dessus du WhatsApp */
+          bottom: 80,
           left: 16,
           zIndex: 9998,
           width: 36,
@@ -115,16 +102,9 @@ const App: React.FC = () => {
           cursor: 'pointer',
           transition: 'all 0.2s ease',
           backdropFilter: 'blur(4px)',
-          /* affiche le nombre de taps restants */
         }}
-        onMouseEnter={e => (e.currentTarget.style.opacity = '1')}
-        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
       >
-        {adminTaps > 0 ? (
-          <span style={{ fontSize: 11, fontWeight: 700, color: '#c9a84c' }}>
-            {5 - adminTaps}
-          </span>
-        ) : '⚙'}
+        ⚙
       </button>
 
       <Navbar

@@ -1,42 +1,134 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>IMIRI - Moroccan Natural Products</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;700&family=Noto+Sans+Tifinagh&display=swap" rel="stylesheet">
+
+    <!-- ═══════════════════════════════════════════
+         SEO PRIMARY
+    ═══════════════════════════════════════════ -->
+    <title>IMIRI – Produits Naturels Marocains | منتجات طبيعية مغربية</title>
+    <meta name="description" content="IMIRI propose une sélection authentique de produits naturels marocains : huile d'argan, savon beldi, ghassoul et plus. Livraison au Maroc et à l'international." />
+    <meta name="keywords" content="produits naturels maroc, huile argan, savon beldi, ghassoul, cosmétiques naturels, IMIRI, منتجات طبيعية, المغرب, أرغان" />
+    <meta name="author" content="IMIRI" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://www.imiri.ma/" />
+
+    <!-- ═══════════════════════════════════════════
+         OPEN GRAPH (Facebook / WhatsApp / LinkedIn)
+    ═══════════════════════════════════════════ -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.imiri.ma/" />
+    <meta property="og:title" content="IMIRI – Produits Naturels Marocains Authentiques" />
+    <meta property="og:description" content="Découvrez nos produits naturels marocains : huile d'argan, savon beldi, ghassoul. Qualité artisanale, livraison mondiale." />
+    <meta property="og:image" content="https://www.imiri.ma/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="fr_MA" />
+    <meta property="og:locale:alternate" content="ar_MA" />
+    <meta property="og:site_name" content="IMIRI" />
+
+    <!-- ═══════════════════════════════════════════
+         TWITTER CARD
+    ═══════════════════════════════════════════ -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@imiri_ma" />
+    <meta name="twitter:title" content="IMIRI – Produits Naturels Marocains" />
+    <meta name="twitter:description" content="Produits naturels marocains authentiques. Huile d'argan, savon beldi, ghassoul et plus." />
+    <meta name="twitter:image" content="https://www.imiri.ma/og-image.jpg" />
+
+    <!-- ═══════════════════════════════════════════
+         GEO & LANGUAGE
+    ═══════════════════════════════════════════ -->
+    <meta name="geo.region" content="MA" />
+    <meta name="geo.placename" content="Maroc" />
+    <link rel="alternate" hreflang="fr" href="https://www.imiri.ma/" />
+    <link rel="alternate" hreflang="ar" href="https://www.imiri.ma/?lang=ar" />
+    <link rel="alternate" hreflang="en" href="https://www.imiri.ma/?lang=en" />
+    <link rel="alternate" hreflang="x-default" href="https://www.imiri.ma/" />
+
+    <!-- ═══════════════════════════════════════════
+         FAVICON
+    ═══════════════════════════════════════════ -->
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- ═══════════════════════════════════════════
+         STRUCTURED DATA (JSON-LD)
+    ═══════════════════════════════════════════ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "IMIRI",
+      "url": "https://www.imiri.ma",
+      "logo": "https://www.imiri.ma/logo.png",
+      "description": "Produits naturels marocains authentiques : huile d'argan, savon beldi, ghassoul.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "MA"
+      },
+      "sameAs": [
+        "https://www.facebook.com/imiri.ma",
+        "https://www.instagram.com/imiri.ma"
+      ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "IMIRI",
+      "url": "https://www.imiri.ma",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.imiri.ma/?search={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- ═══════════════════════════════════════════
+         PERFORMANCE
+    ═══════════════════════════════════════════ -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;700&family=Noto+Sans+Tifinagh&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- ═══════════════════════════════════════════
+         STYLES
+    ═══════════════════════════════════════════ -->
     <style>
-      body {
-        font-family: 'Inter', sans-serif;
-      }
-      .font-arabic {
-        font-family: 'Noto Sans Arabic', sans-serif;
-      }
-      .font-tifinagh {
-        font-family: 'Noto Sans Tifinagh', sans-serif;
-      }
-      html {
-        scroll-behavior: smooth;
-      }
+      body            { font-family: 'Inter', sans-serif; }
+      .font-arabic    { font-family: 'Noto Sans Arabic', sans-serif; }
+      .font-tifinagh  { font-family: 'Noto Sans Tifinagh', sans-serif; }
+      html            { scroll-behavior: smooth; }
     </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react/": "https://esm.sh/react@^19.2.4/",
-    "react": "https://esm.sh/react@^19.2.4",
-    "lucide-react": "https://esm.sh/lucide-react@^0.564.0",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
-</head>
+
+    <link rel="stylesheet" href="/index.css" />
+
+    <!-- Import map -->
+    <script type="importmap">
+    {
+      "imports": {
+        "react":       "https://esm.sh/react@^19.2.4",
+        "react/":      "https://esm.sh/react@^19.2.4/",
+        "react-dom/":  "https://esm.sh/react-dom@^19.2.4/",
+        "lucide-react":"https://esm.sh/lucide-react@^0.564.0"
+      }
+    }
+    </script>
+  </head>
+
   <body class="bg-slate-50 text-slate-900">
     <div id="root"></div>
-  <script type="module" src="/index.tsx"></script>
-</body>
+    <script type="module" src="/index.tsx"></script>
+  </body>
 </html>

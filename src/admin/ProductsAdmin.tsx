@@ -10,9 +10,9 @@ const tr = {
     title: 'Gestion des produits', newProduct: 'Nouveau produit',
     editProduct: 'Modifier', addProduct: 'Ajouter un produit',
     names: 'Nom', descriptions: 'Description', priceImage: 'Prix & Image',
-    price: 'Prix *', currency: 'Devise', imageUrl: 'URL de l\'image',
+    price: 'Prix *', currency: 'Devise', imageUrl: "URL de l'image",
     orUpload: 'ou importer depuis votre ordinateur', uploadBtn: 'Choisir une image',
-    uploading: 'Envoi en cours...', save: 'Enregistrer', saving: 'Enregistrement...',
+    uploading: 'Envoi...', save: 'Enregistrer', saving: 'Enregistrement...',
     cancel: 'Annuler', confirmDelete: 'Confirmer la suppression ?',
     noProducts: 'Aucun produit', errRequired: 'Erreur : Nom (AR) et prix obligatoires',
     errSave: 'Erreur : ', errUpload: 'Erreur upload : ',
@@ -49,9 +49,28 @@ const empty: Partial<Product> = {
   price: 0, image_url: '', price_label: 'DH',
 };
 
+const langs = ['ar', 'en', 'fr', 'ama'] as const;
+
+// ── Shared style helpers ──────────────────────────────────────────────────────
+const inp: React.CSSProperties = {
+  width: '100%', border: '1px solid #d1d5db', borderRadius: 8,
+  padding: '8px 12px', fontSize: 14, outline: 'none', boxSizing: 'border-box',
+};
+const lbl: React.CSSProperties = { fontSize: 12, color: '#6b7280', marginBottom: 4, display: 'block' };
+const secTitle: React.CSSProperties = {
+  fontSize: 11, fontWeight: 700, color: '#2563eb', textTransform: 'uppercase',
+  letterSpacing: 1, marginBottom: 12, marginTop: 20, display: 'block',
+};
+const card: React.CSSProperties = {
+  border: '1px solid #e5e7eb', borderRadius: 16, background: '#f9fafb', padding: 24, marginBottom: 24,
+};
+const grid2: React.CSSProperties = { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 };
+const grid4: React.CSSProperties = { display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 12 };
+
 export const ProductsAdmin: React.FC<{ adminLang: AdminLang }> = ({ adminLang }) => {
   const t = tr[adminLang];
   const isRTL = adminLang === 'ar';
+
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -71,6 +90,7 @@ export const ProductsAdmin: React.FC<{ adminLang: AdminLang }> = ({ adminLang })
   useEffect(() => { fetchProducts(); }, []);
 
   const showMsg = (msg: string) => { setMessage(msg); setTimeout(() => setMessage(''), 3500); };
+  const isErr = (m: string) => m.includes('Err') || m.includes('خط') || m.includes('reur');
 
   const handleUpload = async (file: File) => {
     setUploading(true);
@@ -109,159 +129,160 @@ export const ProductsAdmin: React.FC<{ adminLang: AdminLang }> = ({ adminLang })
     else { showMsg(t.successDelete); fetchProducts(); }
   };
 
-  const inp = "w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm";
-  const langs = ['ar', 'en', 'fr', 'ama'] as const;
-  const isErr = (m: string) => m.includes('rr') || m.includes('خط') || m.includes('reur');
-
-  if (loading) return <div className="text-center py-12 text-gray-400">{t.loading}</div>;
+  if (loading) return <div style={{ textAlign: 'center', padding: 48, color: '#9ca3af' }}>{t.loading}</div>;
 
   return (
     <div dir={isRTL ? 'rtl' : 'ltr'}>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">{t.title}</h2>
+      {/* Header */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+        <h2 style={{ fontSize: 24, fontWeight: 700, color: '#1f2937', margin: 0 }}>{t.title}</h2>
         {!isEditing && (
           <button onClick={() => { setCurrent({ ...empty }); setIsEditing(true); }}
-            className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 gap-2 text-sm font-medium">
+            style={{ display: 'flex', alignItems: 'center', gap: 8, background: '#2563eb', color: '#fff', border: 'none', borderRadius: 12, padding: '10px 18px', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>
             <Plus size={17} /> {t.newProduct}
           </button>
         )}
       </div>
 
+      {/* Message */}
       {message && (
-        <div className={`p-3 mb-4 rounded-lg text-sm ${isErr(message) ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
+        <div style={{ padding: '12px 16px', marginBottom: 16, borderRadius: 8, fontSize: 14, background: isErr(message) ? '#fef2f2' : '#f0fdf4', color: isErr(message) ? '#dc2626' : '#16a34a' }}>
           {message}
         </div>
       )}
 
+      {/* ── Form ── */}
       {isEditing && (
-        <div className="border border-gray-200 rounded-2xl bg-gray-50 p-6 mb-6">
-          <div className="flex justify-between items-center mb-5">
-            <h3 className="font-bold text-gray-700">{current.id ? t.editProduct : t.addProduct}</h3>
-            <button onClick={() => setIsEditing(false)} className="text-gray-400 hover:text-gray-600"><X size={20} /></button>
+        <div style={card}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+            <h3 style={{ fontSize: 16, fontWeight: 700, color: '#374151', margin: 0 }}>{current.id ? t.editProduct : t.addProduct}</h3>
+            <button onClick={() => setIsEditing(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#9ca3af' }}><X size={20} /></button>
           </div>
 
           {/* Names */}
-          <p className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-2">{t.names}</p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
+          <span style={secTitle}>{t.names}</span>
+          <div style={grid4}>
             {langs.map(lang => (
               <div key={lang}>
-                <label className="text-xs text-gray-500 mb-1 block">{lang.toUpperCase()}{lang === 'ar' ? ' *' : ''}</label>
-                <input className={inp} value={(current as any)[`name_${lang}`] || ''}
+                <label style={lbl}>{lang.toUpperCase()}{lang === 'ar' ? ' *' : ''}</label>
+                <input style={inp} value={(current as any)[`name_${lang}`] || ''}
                   onChange={e => setCurrent({ ...current, [`name_${lang}`]: e.target.value })} />
               </div>
             ))}
           </div>
 
           {/* Descriptions */}
-          <p className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-2">{t.descriptions}</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-5">
+          <span style={secTitle}>{t.descriptions}</span>
+          <div style={grid2}>
             {langs.map(lang => (
               <div key={lang}>
-                <label className="text-xs text-gray-500 mb-1 block">{lang.toUpperCase()}</label>
-                <textarea className={inp} rows={2} value={(current as any)[`description_${lang}`] || ''}
+                <label style={lbl}>{lang.toUpperCase()}</label>
+                <textarea style={{ ...inp, resize: 'vertical' } as React.CSSProperties} rows={2}
+                  value={(current as any)[`description_${lang}`] || ''}
                   onChange={e => setCurrent({ ...current, [`description_${lang}`]: e.target.value })} />
               </div>
             ))}
           </div>
 
           {/* Price */}
-          <p className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-2">{t.priceImage}</p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+          <span style={secTitle}>{t.priceImage}</span>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
             <div>
-              <label className="text-xs text-gray-500 mb-1 block">{t.price}</label>
-              <input type="number" className={inp} value={current.price || ''}
+              <label style={lbl}>{t.price}</label>
+              <input type="number" style={inp} value={current.price || ''}
                 onChange={e => setCurrent({ ...current, price: parseFloat(e.target.value) })} />
             </div>
             <div>
-              <label className="text-xs text-gray-500 mb-1 block">{t.currency}</label>
-              <input className={inp} value={current.price_label || 'DH'}
+              <label style={lbl}>{t.currency}</label>
+              <input style={inp} value={current.price_label || 'DH'}
                 onChange={e => setCurrent({ ...current, price_label: e.target.value })} />
             </div>
           </div>
 
           {/* Image URL */}
-          <div className="mb-3">
-            <label className="text-xs text-gray-500 mb-1 block">{t.imageUrl}</label>
-            <input className={inp} value={current.image_url || ''}
-              onChange={e => setCurrent({ ...current, image_url: e.target.value })}
-              placeholder="https://..." />
+          <div style={{ marginBottom: 12 }}>
+            <label style={lbl}>{t.imageUrl}</label>
+            <input style={inp} value={current.image_url || ''}
+              onChange={e => setCurrent({ ...current, image_url: e.target.value })} placeholder="https://..." />
           </div>
 
-          {/* Upload divider */}
-          <div className="flex items-center gap-3 mb-3">
-            <div className="flex-1 h-px bg-gray-200" />
-            <span className="text-xs text-gray-400">{t.orUpload}</span>
-            <div className="flex-1 h-px bg-gray-200" />
+          {/* Divider */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, margin: '12px 0' }}>
+            <div style={{ flex: 1, height: 1, background: '#e5e7eb' }} />
+            <span style={{ fontSize: 12, color: '#9ca3af' }}>{t.orUpload}</span>
+            <div style={{ flex: 1, height: 1, background: '#e5e7eb' }} />
           </div>
 
-          <input ref={fileRef} type="file" accept="image/*" className="hidden"
+          <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }}
             onChange={e => { if (e.target.files?.[0]) handleUpload(e.target.files[0]); }} />
 
           <button type="button" onClick={() => fileRef.current?.click()} disabled={uploading}
-            className="flex items-center gap-2 border-2 border-dashed border-blue-300 text-blue-600 hover:border-blue-500 hover:bg-blue-50 rounded-xl px-4 py-3 text-sm transition-colors disabled:opacity-50 w-full justify-center mb-4">
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, width: '100%', padding: '12px', border: '2px dashed #93c5fd', borderRadius: 12, background: 'transparent', color: '#2563eb', fontSize: 14, cursor: 'pointer', marginBottom: 16 }}>
             {uploading ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
             {uploading ? t.uploading : t.uploadBtn}
           </button>
 
           {/* Preview */}
           {current.image_url && (
-            <div className="relative w-24 h-24 mb-4">
-              <img src={current.image_url} alt="preview" className="w-24 h-24 object-cover rounded-xl border shadow-sm" />
+            <div style={{ position: 'relative', display: 'inline-block', marginBottom: 16 }}>
+              <img src={current.image_url} alt="preview" style={{ width: 96, height: 96, objectFit: 'cover', borderRadius: 12, border: '1px solid #e5e7eb' }} />
               <button onClick={() => setCurrent({ ...current, image_url: '' })}
-                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-0.5 hover:bg-red-600">
-                <X size={14} />
+                style={{ position: 'absolute', top: -8, right: -8, background: '#ef4444', border: 'none', borderRadius: '50%', width: 22, height: 22, color: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <X size={13} />
               </button>
             </div>
           )}
 
-          <div className="flex gap-3 pt-2">
+          {/* Actions */}
+          <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
             <button onClick={handleSave} disabled={saving}
-              className="flex items-center bg-green-600 text-white px-5 py-2.5 rounded-xl hover:bg-green-700 disabled:bg-gray-400 gap-2 text-sm font-medium">
+              style={{ display: 'flex', alignItems: 'center', gap: 8, background: saving ? '#9ca3af' : '#16a34a', color: '#fff', border: 'none', borderRadius: 12, padding: '10px 20px', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>
               {saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
               {saving ? t.saving : t.save}
             </button>
             <button onClick={() => setIsEditing(false)}
-              className="bg-gray-200 text-gray-700 px-5 py-2.5 rounded-xl hover:bg-gray-300 text-sm">
+              style={{ background: '#e5e7eb', color: '#374151', border: 'none', borderRadius: 12, padding: '10px 20px', fontSize: 14, cursor: 'pointer' }}>
               {t.cancel}
             </button>
           </div>
         </div>
       )}
 
+      {/* ── Table ── */}
       {products.length === 0 && !isEditing ? (
-        <div className="text-center py-16 text-gray-400 flex flex-col items-center gap-3">
-          <ImageIcon size={40} className="opacity-30" />
-          <p>{t.noProducts}</p>
+        <div style={{ textAlign: 'center', padding: '64px 0', color: '#9ca3af', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+          <ImageIcon size={40} style={{ opacity: 0.3 }} />
+          <p style={{ margin: 0 }}>{t.noProducts}</p>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-gray-200">
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b">
-              <tr className={isRTL ? 'text-right' : 'text-left'}>
+        <div style={{ overflowX: 'auto', borderRadius: 16, border: '1px solid #e5e7eb' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
+            <thead>
+              <tr style={{ background: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
                 {[t.colImage, t.colName, t.colPrice, t.colActions].map(h => (
-                  <th key={h} className="p-3 font-semibold text-gray-600">{h}</th>
+                  <th key={h} style={{ padding: '12px 16px', fontWeight: 600, color: '#6b7280', textAlign: isRTL ? 'right' : 'left' }}>{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {products.map(p => (
-                <tr key={p.id} className="border-b hover:bg-gray-50 transition-colors">
-                  <td className="p-3">
+                <tr key={p.id} style={{ borderBottom: '1px solid #f3f4f6' }}>
+                  <td style={{ padding: '12px 16px' }}>
                     {p.image_url
-                      ? <img src={p.image_url} alt={p.name_ar} className="w-12 h-12 object-cover rounded-lg" />
-                      : <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center"><ImageIcon size={18} className="text-gray-300" /></div>}
+                      ? <img src={p.image_url} alt={p.name_ar} style={{ width: 48, height: 48, objectFit: 'cover', borderRadius: 8 }} />
+                      : <div style={{ width: 48, height: 48, background: '#f3f4f6', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><ImageIcon size={18} style={{ color: '#d1d5db' }} /></div>}
                   </td>
-                  <td className="p-3">
-                    <p className="font-semibold text-gray-800">{p.name_fr || p.name_ar}</p>
-                    <p className="text-gray-400 text-xs">{p.name_ar}</p>
+                  <td style={{ padding: '12px 16px' }}>
+                    <p style={{ margin: 0, fontWeight: 600, color: '#1f2937' }}>{p.name_fr || p.name_ar}</p>
+                    <p style={{ margin: 0, fontSize: 12, color: '#9ca3af' }}>{p.name_ar}</p>
                   </td>
-                  <td className="p-3 font-medium text-gray-700">{p.price} {p.price_label}</td>
-                  <td className="p-3">
-                    <div className="flex gap-1">
+                  <td style={{ padding: '12px 16px', fontWeight: 500, color: '#374151' }}>{p.price} {p.price_label}</td>
+                  <td style={{ padding: '12px 16px' }}>
+                    <div style={{ display: 'flex', gap: 4 }}>
                       <button onClick={() => { setCurrent(p); setIsEditing(true); }}
-                        className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"><Edit size={16} /></button>
+                        style={{ padding: 8, background: '#eff6ff', border: 'none', borderRadius: 8, cursor: 'pointer', color: '#2563eb' }}><Edit size={16} /></button>
                       <button onClick={() => handleDelete(p.id)}
-                        className="p-2 text-red-500 hover:bg-red-50 rounded-lg"><Trash2 size={16} /></button>
+                        style={{ padding: 8, background: '#fef2f2', border: 'none', borderRadius: 8, cursor: 'pointer', color: '#dc2626' }}><Trash2 size={16} /></button>
                     </div>
                   </td>
                 </tr>

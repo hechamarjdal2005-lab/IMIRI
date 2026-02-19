@@ -29,56 +29,98 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
-        {/* Logo / Title */}
-        <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <Lock size={28} className="text-white" />
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 16,
+      fontFamily: 'Inter, sans-serif',
+    }}>
+      <div style={{
+        background: '#fff',
+        borderRadius: 20,
+        boxShadow: '0 25px 60px rgba(0,0,0,0.4)',
+        width: '100%',
+        maxWidth: 420,
+        padding: 40,
+      }}>
+        {/* Icon */}
+        <div style={{ textAlign: 'center', marginBottom: 28 }}>
+          <div style={{
+            width: 64, height: 64,
+            background: '#2563eb',
+            borderRadius: 16,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            margin: '0 auto 16px',
+          }}>
+            <Lock size={28} color="#fff" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-800">Panneau d'administration</h1>
-          <p className="text-gray-500 text-sm mt-1">Connectez-vous pour continuer</p>
+          <h1 style={{ fontSize: 22, fontWeight: 700, color: '#1f2937', margin: '0 0 6px' }}>
+            Panneau d'administration
+          </h1>
+          <p style={{ fontSize: 14, color: '#6b7280', margin: 0 }}>
+            Connectez-vous pour continuer
+          </p>
         </div>
 
         {/* Error */}
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg p-3 mb-5 text-sm">
+          <div style={{
+            background: '#fef2f2', border: '1px solid #fecaca',
+            color: '#dc2626', borderRadius: 10,
+            padding: '12px 16px', marginBottom: 20, fontSize: 14,
+          }}>
             {error}
           </div>
         )}
 
         {/* Form */}
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleLogin}>
           {/* Email */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+          <div style={{ marginBottom: 16 }}>
+            <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#374151', marginBottom: 6 }}>
               Adresse e-mail
             </label>
-            <div className="relative">
-              <Mail size={18} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <div style={{ position: 'relative' }}>
+              <Mail size={17} color="#9ca3af" style={{ position: 'absolute', top: '50%', right: 12, transform: 'translateY(-50%)', pointerEvents: 'none' }} />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="admin@example.com"
-                className="w-full border border-gray-300 rounded-lg py-2.5 pr-10 pl-4 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                style={{
+                  width: '100%', boxSizing: 'border-box',
+                  border: '1px solid #d1d5db', borderRadius: 10,
+                  padding: '11px 42px 11px 14px',
+                  fontSize: 14, outline: 'none',
+                  transition: 'border-color 0.2s',
+                }}
+                onFocus={e => (e.target.style.borderColor = '#2563eb')}
+                onBlur={e => (e.target.style.borderColor = '#d1d5db')}
               />
             </div>
           </div>
 
           {/* Password */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+          <div style={{ marginBottom: 24 }}>
+            <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#374151', marginBottom: 6 }}>
               Mot de passe
             </label>
-            <div className="relative">
+            <div style={{ position: 'relative' }}>
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                style={{
+                  position: 'absolute', top: '50%', left: 12,
+                  transform: 'translateY(-50%)',
+                  background: 'none', border: 'none', cursor: 'pointer',
+                  color: '#9ca3af', padding: 0, display: 'flex', alignItems: 'center',
+                }}
               >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
               </button>
               <input
                 type={showPassword ? 'text' : 'password'}
@@ -86,7 +128,15 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full border border-gray-300 rounded-lg py-2.5 pl-10 pr-4 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                style={{
+                  width: '100%', boxSizing: 'border-box',
+                  border: '1px solid #d1d5db', borderRadius: 10,
+                  padding: '11px 14px 11px 42px',
+                  fontSize: 14, outline: 'none',
+                  transition: 'border-color 0.2s',
+                }}
+                onFocus={e => (e.target.style.borderColor = '#2563eb')}
+                onBlur={e => (e.target.style.borderColor = '#d1d5db')}
               />
             </div>
           </div>
@@ -95,10 +145,27 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 mt-2"
+            style={{
+              width: '100%',
+              background: loading ? '#9ca3af' : '#2563eb',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 12,
+              padding: '13px',
+              fontSize: 15,
+              fontWeight: 700,
+              cursor: loading ? 'not-allowed' : 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 8,
+              transition: 'background 0.2s',
+            }}
           >
-            {loading ? <Loader2 size={18} className="animate-spin" /> : <Lock size={18} />}
-            {loading ? 'Connexion...' : 'Se connecter'}
+            {loading
+              ? <><Loader2 size={18} className="animate-spin" /> Connexion...</>
+              : <><Lock size={18} /> Se connecter</>
+            }
           </button>
         </form>
       </div>

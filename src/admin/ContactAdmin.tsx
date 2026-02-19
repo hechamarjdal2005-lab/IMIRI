@@ -7,20 +7,16 @@ const tr = {
   fr: {
     title: 'Gestion du contact', titles: 'Titres', contactInfo: 'Informations de contact',
     phone: 'Téléphone', email: 'E-mail', whatsapp: 'WhatsApp',
-    locations: 'Adresses (Locations)', mapEmbed: 'URL d\'intégration Google Maps',
-    social: 'Réseaux sociaux',
-    save: 'Enregistrer', saving: 'Enregistrement...',
-    successSave: 'Enregistré avec succès !', errSave: 'Erreur : ',
-    loading: 'Chargement...',
+    locations: 'Adresses', mapEmbed: "URL d'intégration Google Maps",
+    social: 'Réseaux sociaux', save: 'Enregistrer', saving: 'Enregistrement...',
+    successSave: 'Enregistré !', errSave: 'Erreur : ', loading: 'Chargement...',
   },
   ar: {
     title: 'إدارة معلومات الاتصال', titles: 'العناوين', contactInfo: 'معلومات التواصل',
     phone: 'الهاتف', email: 'البريد الإلكتروني', whatsapp: 'واتساب',
     locations: 'المواقع', mapEmbed: 'رابط خريطة Google (Embed)',
-    social: 'التواصل الاجتماعي',
-    save: 'حفظ التغييرات', saving: 'جاري الحفظ...',
-    successSave: 'تم الحفظ بنجاح!', errSave: 'خطأ: ',
-    loading: 'جاري التحميل...',
+    social: 'التواصل الاجتماعي', save: 'حفظ', saving: 'جاري الحفظ...',
+    successSave: 'تم الحفظ!', errSave: 'خطأ: ', loading: 'جاري التحميل...',
   }
 };
 
@@ -43,6 +39,16 @@ const defaultData: ContactData = {
 
 const langs = ['ar', 'en', 'fr', 'ama'] as const;
 
+const inp: React.CSSProperties = {
+  width: '100%', border: '1px solid #d1d5db', borderRadius: 8,
+  padding: '8px 12px', fontSize: 14, outline: 'none', boxSizing: 'border-box',
+};
+const lbl: React.CSSProperties = { fontSize: 12, color: '#6b7280', marginBottom: 4, display: 'block' };
+const secTitle: React.CSSProperties = {
+  fontSize: 11, fontWeight: 700, color: '#2563eb', textTransform: 'uppercase',
+  letterSpacing: 1, marginBottom: 12, marginTop: 24, display: 'block',
+};
+
 export const ContactAdmin: React.FC<{ adminLang: AdminLang }> = ({ adminLang }) => {
   const t = tr[adminLang];
   const isRTL = adminLang === 'ar';
@@ -64,6 +70,7 @@ export const ContactAdmin: React.FC<{ adminLang: AdminLang }> = ({ adminLang }) 
     setData(prev => prev ? { ...prev, [field]: value } : null);
 
   const showMsg = (msg: string) => { setMessage(msg); setTimeout(() => setMessage(''), 3500); };
+  const isErr = (m: string) => m.includes('Err') || m.includes('خط') || m.includes('reur');
 
   const handleSave = async () => {
     if (!data) return;
@@ -81,95 +88,94 @@ export const ContactAdmin: React.FC<{ adminLang: AdminLang }> = ({ adminLang }) 
     showMsg(error ? t.errSave + error.message : t.successSave);
   };
 
-  if (loading) return <div className="text-center py-12 text-gray-400">{t.loading}</div>;
+  if (loading) return <div style={{ textAlign: 'center', padding: 48, color: '#9ca3af' }}>{t.loading}</div>;
   if (!data) return null;
 
-  const inp = "w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none text-sm";
-  const lbl = "text-xs text-gray-500 mb-1 block";
-  const secTitle = "text-xs font-bold text-blue-600 uppercase tracking-wider mb-3 mt-6 block";
-  const isErr = (m: string) => m.includes('rr') || m.includes('خط') || m.includes('reur');
+  const grid4: React.CSSProperties = { display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 12 };
+  const grid3: React.CSSProperties = { display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 };
+  const divider: React.CSSProperties = { borderBottom: '1px solid #f3f4f6', paddingBottom: 20, marginBottom: 4 };
 
   return (
     <div dir={isRTL ? 'rtl' : 'ltr'}>
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">{t.title}</h2>
+      <h2 style={{ fontSize: 24, fontWeight: 700, color: '#1f2937', marginBottom: 24, marginTop: 0 }}>{t.title}</h2>
 
       {message && (
-        <div className={`p-3 mb-5 rounded-lg text-sm ${isErr(message) ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
+        <div style={{ padding: '12px 16px', marginBottom: 16, borderRadius: 8, fontSize: 14, background: isErr(message) ? '#fef2f2' : '#f0fdf4', color: isErr(message) ? '#dc2626' : '#16a34a' }}>
           {message}
         </div>
       )}
 
       {/* Titles */}
-      <span className={secTitle}>{t.titles}</span>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pb-6 border-b border-gray-100">
+      <span style={secTitle}>{t.titles}</span>
+      <div style={{ ...grid4, ...divider }}>
         {langs.map(lang => (
           <div key={lang}>
-            <label className={lbl}>{lang.toUpperCase()}</label>
-            <input className={inp} value={(data as any)[`title_${lang}`]}
+            <label style={lbl}>{lang.toUpperCase()}</label>
+            <input style={inp} value={(data as any)[`title_${lang}`]}
               onChange={e => set(`title_${lang}` as keyof ContactData, e.target.value)} />
           </div>
         ))}
       </div>
 
-      {/* Contact Info */}
-      <span className={secTitle}>{t.contactInfo}</span>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pb-6 border-b border-gray-100">
+      {/* Contact info */}
+      <span style={secTitle}>{t.contactInfo}</span>
+      <div style={{ ...grid3, ...divider }}>
         <div>
-          <label className={lbl}>{t.phone}</label>
-          <input className={inp} value={data.phone} onChange={e => set('phone', e.target.value)} />
+          <label style={lbl}>{t.phone}</label>
+          <input style={inp} value={data.phone} onChange={e => set('phone', e.target.value)} />
         </div>
         <div>
-          <label className={lbl}>{t.email}</label>
-          <input type="email" className={inp} value={data.email} onChange={e => set('email', e.target.value)} />
+          <label style={lbl}>{t.email}</label>
+          <input type="email" style={inp} value={data.email} onChange={e => set('email', e.target.value)} />
         </div>
         <div>
-          <label className={lbl}>{t.whatsapp}</label>
-          <input className={inp} placeholder="+212600000000" value={data.whatsapp_number}
+          <label style={lbl}>{t.whatsapp}</label>
+          <input style={inp} placeholder="+212600000000" value={data.whatsapp_number}
             onChange={e => set('whatsapp_number', e.target.value)} />
         </div>
       </div>
 
       {/* Locations */}
-      <span className={secTitle}>{t.locations}</span>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+      <span style={secTitle}>{t.locations}</span>
+      <div style={{ ...grid4, marginBottom: 12 }}>
         {langs.map(lang => (
           <div key={lang}>
-            <label className={lbl}>{lang.toUpperCase()}</label>
-            <input className={inp} value={(data as any)[`location_${lang}`]}
+            <label style={lbl}>{lang.toUpperCase()}</label>
+            <input style={inp} value={(data as any)[`location_${lang}`]}
               onChange={e => set(`location_${lang}` as keyof ContactData, e.target.value)} />
           </div>
         ))}
       </div>
-      <div className="pb-6 border-b border-gray-100">
-        <label className={lbl}>{t.mapEmbed}</label>
-        <input className={inp} placeholder="https://www.google.com/maps/embed?..."
+      <div style={divider}>
+        <label style={lbl}>{t.mapEmbed}</label>
+        <input style={inp} placeholder="https://www.google.com/maps/embed?..."
           value={data.map_embed_url} onChange={e => set('map_embed_url', e.target.value)} />
         {data.map_embed_url && (
-          <div className="mt-3 rounded-xl overflow-hidden border h-44">
+          <div style={{ marginTop: 12, borderRadius: 12, overflow: 'hidden', border: '1px solid #e5e7eb', height: 180 }}>
             <iframe src={data.map_embed_url} width="100%" height="100%" style={{ border: 0 }} loading="lazy" />
           </div>
         )}
       </div>
 
       {/* Social */}
-      <span className={secTitle}>{t.social}</span>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <span style={secTitle}>{t.social}</span>
+      <div style={{ ...grid3, marginBottom: 32 }}>
         {[
-          { label: 'Facebook', field: 'facebook_url' as keyof ContactData, placeholder: 'https://facebook.com/...' },
-          { label: 'Instagram', field: 'instagram_url' as keyof ContactData, placeholder: 'https://instagram.com/...' },
-          { label: 'Twitter / X', field: 'twitter_url' as keyof ContactData, placeholder: 'https://twitter.com/...' },
-        ].map(({ label, field, placeholder }) => (
+          { label: 'Facebook', field: 'facebook_url', ph: 'https://facebook.com/...' },
+          { label: 'Instagram', field: 'instagram_url', ph: 'https://instagram.com/...' },
+          { label: 'Twitter / X', field: 'twitter_url', ph: 'https://twitter.com/...' },
+        ].map(({ label, field, ph }) => (
           <div key={field}>
-            <label className={lbl}>{label}</label>
-            <input className={inp} placeholder={placeholder}
-              value={(data as any)[field]} onChange={e => set(field, e.target.value)} />
+            <label style={lbl}>{label}</label>
+            <input style={inp} placeholder={ph}
+              value={(data as any)[field]} onChange={e => set(field as keyof ContactData, e.target.value)} />
           </div>
         ))}
       </div>
 
       <button onClick={handleSave} disabled={saving}
-        className="flex items-center bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 disabled:bg-gray-400 transition-colors gap-2">
-        {saving ? <Loader2 className="animate-spin" size={20} /> : <Save size={20} />}
+        style={{ display: 'flex', alignItems: 'center', gap: 8, background: saving ? '#9ca3af' : '#2563eb', color: '#fff', border: 'none', borderRadius: 12, padding: '12px 24px', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>
+        {saving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
         {saving ? t.saving : t.save}
       </button>
     </div>

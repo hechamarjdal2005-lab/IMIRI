@@ -245,7 +245,7 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
           {/* ── BOTTOM BAR ── */}
           <div className="ft-bottom">
             <p className="ft-copyright">
-              © {new Date().getFullYear()} <strong>IMIRI Compérative</strong>.{' '}
+              © {new Date().getFullYear()} <strong>sinshincom</strong>.{' '}
               {tr('All rights reserved.', 'Tous droits réservés.', 'جميع الحقوق محفوظة.')}
             </p>
             <p className="ft-made">

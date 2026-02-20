@@ -102,7 +102,7 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
           --ct-white:  #ffffff;
         }
 
-        /* ── SECTION ── */
+        /* ── SECTION  */
         .ct-section {
           position: relative;
           background: linear-gradient(180deg, #0d2b10 0%, #0a1f0e 60%, #0d2b10 100%);
@@ -121,7 +121,7 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
 
         .ct-grain {
           position: absolute; inset: 0; pointer-events: none; z-index: 0; opacity: 0.025;
-          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+          background-image: url("image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
           background-size: 160px;
         }
 
@@ -433,21 +433,22 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
             {/* LEFT — Cards */}
             <div className="ct-cards">
 
+              {/* PHONE CARD */}
               <a
-                href={`https://wa.me/${contact.whatsapp_number}`}
-                target="_blank" rel="noopener noreferrer"
+                href={`tel:${contact.phone}`}
                 className={`ct-card ${visible ? 'vis' : ''}`}
                 style={{ transitionDelay: '0.15s' }}
               >
                 <div className="ct-card-shimmer" />
                 <div className="ct-card-icon"><Phone size={18} strokeWidth={1.5} /></div>
                 <div>
-                  <div className="ct-card-title">{t('WhatsApp', 'WhatsApp', 'واتساب')}</div>
+                  <div className="ct-card-title">{t('Phone', 'Téléphone', 'الهاتف')}</div>
                   <div className="ct-card-value">{contact.phone}</div>
                 </div>
                 <Send size={14} className="ct-card-arrow" />
               </a>
 
+              {/* EMAIL CARD */}
               <a
                 href={`mailto:${contact.email}`}
                 className={`ct-card ${visible ? 'vis' : ''}`}
@@ -462,6 +463,7 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
                 <Send size={14} className="ct-card-arrow" />
               </a>
 
+              {/* LOCATION CARD */}
               <div
                 className={`ct-card ${visible ? 'vis' : ''}`}
                 style={{ transitionDelay: '0.35s', cursor: 'default' }}
@@ -474,6 +476,7 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
                 </div>
               </div>
 
+              {/* SOCIAL LINKS */}
               <div className={`ct-social-wrap ${visible ? 'vis' : ''}`} style={{ transitionDelay: '0.45s' }}>
                 <div className="ct-social-label">
                   {t('Follow Us', 'Suivez-Nous', 'تابعونا')}
@@ -489,13 +492,9 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
                       <Instagram size={18} strokeWidth={1.5} />
                     </a>
                   )}
-                  {contact.whatsapp_number && (
-                    <a href={`https://wa.me/${contact.whatsapp_number}`} target="_blank" rel="noopener noreferrer" className="ct-social-btn">
-                      <Phone size={18} strokeWidth={1.5} />
-                    </a>
-                  )}
                 </div>
               </div>
+
             </div>
 
             {/* RIGHT — Map */}

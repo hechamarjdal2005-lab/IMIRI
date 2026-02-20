@@ -1,6 +1,6 @@
 import React from 'react';
 import { Language } from '../types';
-import { ArrowUp } from 'lucide-react';
+import { ArrowUp, Settings } from 'lucide-react';
 
 interface FooterProps {
   t: {
@@ -10,9 +10,10 @@ interface FooterProps {
     contact: string;
   };
   lang: Language;
+  onAdminClick?: () => void;
 }
 
-const Footer: React.FC<FooterProps> = ({ t, lang }) => {
+const Footer: React.FC<FooterProps> = ({ t, lang, onAdminClick }) => {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
   const isRTL = lang === 'ar' || lang === 'ama';
 
@@ -36,8 +37,8 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
           position: relative;
           background: linear-gradient(180deg, #0a1f0e 0%, #060f07 100%);
           color: #fff;
-          overflow: hidden;
           font-family: var(--ft-font);
+          /* overflow: hidden; ← HAD L'LI KANET KATMNE3 L'FIXED */
         }
 
         .ft-grid {
@@ -50,7 +51,7 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
 
         .ft-grain {
           position: absolute; inset: 0; pointer-events: none; opacity: 0.025;
-          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+          background-image: url("image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
           background-size: 160px;
         }
 
@@ -84,7 +85,7 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
           .ft-inner { padding: 56px 24px 32px; }
         }
 
-        /* ── BRAND LOGO ── */
+        /* ── BRAND ── */
         .ft-brand-logo {
           display: flex; align-items: center; gap: 14px;
           margin-bottom: 20px; cursor: pointer;
@@ -171,23 +172,56 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
         }
         .ft-made-heart { color: var(--ft-gold); font-size: 0.9rem; }
 
-        /* ── SCROLL TO TOP ── */
-        .ft-scroll-btn {
-          position: fixed; bottom: 28px; right: 28px; z-index: 99;
+        /* ── FLOATING BUTTONS - FIXED POSITION ── */
+        .ft-float-btn {
+          position: fixed;
+          bottom: 28px;
           width: 44px; height: 44px;
-          background: var(--ft-gold); color: #0a1f0e;
           border: none; cursor: pointer;
           display: flex; align-items: center; justify-content: center;
           clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-          transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+          transition: all 0.2s ease;
+          z-index: 9999; /* ZIDT HAD L'Z-INDEX BACH YKONO FAW9 */
+        }
+
+        /* Settings button - BOTTOM LEFT */
+        .ft-float-left {
+          left: 28px;
+          background: rgba(0,0,0,0.25);
+          color: rgba(255,255,255,0.35);
+          border: 1px solid rgba(255,255,255,0.1);
+          backdrop-filter: blur(4px);
+        }
+        .ft-float-left:hover {
+          background: rgba(201,168,76,0.15);
+          color: var(--ft-gold);
+          border-color: var(--ft-gold);
+          transform: translateY(-3px);
+          box-shadow: 0 8px 24px rgba(201,168,76,0.2);
+        }
+
+        /* Scroll button - BOTTOM RIGHT */
+        .ft-float-right {
+          right: 28px;
+          background: var(--ft-gold);
+          color: #0a1f0e;
           box-shadow: 0 8px 24px rgba(201,168,76,0.3);
         }
-        .ft-scroll-btn:hover {
+        .ft-float-right:hover {
           background: #d4b560;
           transform: translateY(-3px);
           box-shadow: 0 14px 32px rgba(201,168,76,0.4);
         }
-        .ft-scroll-btn:active { transform: translateY(0); }
+        .ft-float-right:active { transform: translateY(0); }
+
+        @media (max-width: 640px) {
+          .ft-float-btn {
+            bottom: 20px;
+            width: 40px; height: 40px;
+          }
+          .ft-float-left { left: 20px; }
+          .ft-float-right { right: 20px; }
+        }
       `}</style>
 
       <footer className="ft-root" dir={isRTL ? 'rtl' : 'ltr'}>
@@ -254,11 +288,30 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
             </p>
           </div>
         </div>
-
-        <button className="ft-scroll-btn" onClick={scrollToTop} aria-label="Back to top">
-          <ArrowUp size={18} strokeWidth={2} />
-        </button>
       </footer>
+
+      {/* ── FLOATING BUTTONS (KHARJIN MEN L'FOOTER) ── */}
+      
+      {/* Settings/Admin button - BOTTOM LEFT */}
+      {onAdminClick && (
+        <button 
+          className="ft-float-btn ft-float-left" 
+          onClick={onAdminClick} 
+          title="Admin Panel"
+          aria-label="Admin Panel"
+        >
+          <Settings size={18} strokeWidth={2} />
+        </button>
+      )}
+
+      {/* Scroll to top button - BOTTOM RIGHT */}
+      <button 
+        className="ft-float-btn ft-float-right" 
+        onClick={scrollToTop} 
+        aria-label="Back to top"
+      >
+        <ArrowUp size={18} strokeWidth={2} />
+      </button>
     </>
   );
 };

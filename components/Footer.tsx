@@ -206,7 +206,7 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
               <div className="ft-brand-logo" onClick={scrollToTop}>
                 <div className="ft-brand-text">
                   <div className="ft-brand-name">IMIRI</div>
-                  <div className="ft-brand-sub">Compérative</div>
+                  <div className="ft-brand-sub">Coopérative</div>
                 </div>
               </div>
 
@@ -245,7 +245,7 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
           {/* ── BOTTOM BAR ── */}
           <div className="ft-bottom">
             <p className="ft-copyright">
-              © {new Date().getFullYear()} <strong>sinshincom</strong>.{' '}
+              © {new Date().getFullYear()} <strong>GDF</strong>.{' '}
               {tr('All rights reserved.', 'Tous droits réservés.', 'جميع الحقوق محفوظة.')}
             </p>
             <p className="ft-made">

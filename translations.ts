@@ -5,13 +5,13 @@ export const translations: Record<Language, Translation> = {
   en: {
     nav: { home: 'Home', about: 'About Us', products: 'Products', contact: 'Contact' },
     hero: { 
-      title: 'IMIRI Comperative', 
+      title: 'IMIRI Cooperative', 
       subtitle: 'Pure Moroccan nature in every drop. Authentic products crafted with passion by local hands.',
       cta: 'Explore Products' 
     },
     about: {
       title: 'Our Story',
-      description: 'IMIRI is more than a comperative; it is a community of dedicated women preserving the ancestral secrets of Moroccan natural beauty and health. We harvest the best nature has to offer to bring you pure, organic excellence.',
+      description: 'IMIRI is more than a cooperative; it is a community of dedicated women preserving the ancestral secrets of Moroccan natural beauty and health. We harvest the best nature has to offer to bring you pure, organic excellence.',
       values: {
         natural: '100% Natural',
         authentic: 'Pure Authenticity',

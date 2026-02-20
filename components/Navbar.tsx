@@ -377,7 +377,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentLang, setLang, t, cartCount, onC
             )}
             <div className="nav-logo-text">
               <span className="nav-logo-name">{siteSettings?.site_name || 'IMIRI'}</span>
-              <span className="nav-logo-sub">Compérative</span>
+              <span className="nav-logo-sub">Coopérative</span>
             </div>
           </div>
 

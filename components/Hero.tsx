@@ -625,7 +625,7 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
             </div>
             <div>
               <div className="h-logo-text">IMIRI</div>
-              <div className="h-logo-sub">Comperative</div>
+              <div className="h-logo-sub">Cooperative</div>
             </div>
           </a>
           <div className="h-nav-right">

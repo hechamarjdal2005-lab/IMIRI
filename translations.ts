@@ -5,13 +5,13 @@ export const translations: Record<Language, Translation> = {
   en: {
     nav: { home: 'Home', about: 'About Us', products: 'Products', contact: 'Contact' },
     hero: { 
-      title: 'IMIRI Cooperative', 
+      title: 'IMIRI Comperative', 
       subtitle: 'Pure Moroccan nature in every drop. Authentic products crafted with passion by local hands.',
       cta: 'Explore Products' 
     },
     about: {
       title: 'Our Story',
-      description: 'IMIRI is more than a cooperative; it is a community of dedicated women preserving the ancestral secrets of Moroccan natural beauty and health. We harvest the best nature has to offer to bring you pure, organic excellence.',
+      description: 'IMIRI is more than a comperative; it is a community of dedicated women preserving the ancestral secrets of Moroccan natural beauty and health. We harvest the best nature has to offer to bring you pure, organic excellence.',
       values: {
         natural: '100% Natural',
         authentic: 'Pure Authenticity',
@@ -41,13 +41,13 @@ export const translations: Record<Language, Translation> = {
   fr: {
     nav: { home: 'Accueil', about: 'À Propos', products: 'Produits', contact: 'Contact' },
     hero: { 
-      title: 'Coopérative IMIRI', 
+      title: 'Compérative IMIRI', 
       subtitle: 'La nature marocaine pure dans chaque goutte. Des produits authentiques fabriqués avec passion par des mains locales.',
       cta: 'Explorer les Produits' 
     },
     about: {
       title: 'Notre Histoire',
-      description: 'IMIRI est plus qu’une coopérative ; c’est une communauté de femmes dévouées préservant les secrets ancestraux de la beauté et de la santé naturelle marocaine.',
+      description: 'IMIRI est plus qu’une compérative ; c’est une communauté de femmes dévouées préservant les secrets ancestraux de la beauté et de la santé naturelle marocaine.',
       values: {
         natural: '100% Naturel',
         authentic: 'Pure Authenticité',

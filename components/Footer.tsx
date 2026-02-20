@@ -1,6 +1,6 @@
 import React from 'react';
 import { Language } from '../types';
-import { Leaf, ArrowUp } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
 
 interface FooterProps {
   t: {
@@ -22,17 +22,24 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+        /* ── COCKTAIL FONT (Baloo 2) ── */
+        @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap');
+
+        :root {
+          --ft-font: 'Baloo 2', cursive;
+          --ft-gold: #c9a84c;
+          --ft-gold-dim: rgba(201,168,76,0.5);
+          --ft-dark: #0a1f0e;
+        }
 
         .ft-root {
           position: relative;
           background: linear-gradient(180deg, #0a1f0e 0%, #060f07 100%);
           color: #fff;
           overflow: hidden;
-          font-family: 'DM Sans', sans-serif;
+          font-family: var(--ft-font);
         }
 
-        /* Grid bg */
         .ft-grid {
           position: absolute; inset: 0; pointer-events: none;
           background-image:
@@ -41,14 +48,12 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
           background-size: 80px 80px;
         }
 
-        /* Grain */
         .ft-grain {
           position: absolute; inset: 0; pointer-events: none; opacity: 0.025;
           background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
           background-size: 160px;
         }
 
-        /* Gold blob */
         .ft-blob {
           position: absolute; border-radius: 50%;
           pointer-events: none; filter: blur(90px); opacity: 0.04;
@@ -56,7 +61,6 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
         .ft-blob-1 { width: 500px; height: 500px; top: -100px; left: -100px; background: #c9a84c; }
         .ft-blob-2 { width: 400px; height: 400px; bottom: 0; right: -80px; background: #4caf50; }
 
-        /* Top gold separator */
         .ft-separator {
           height: 1px;
           background: linear-gradient(to right, transparent, rgba(201,168,76,0.4), transparent);
@@ -80,36 +84,34 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
           .ft-inner { padding: 56px 24px 32px; }
         }
 
-        /* ── BRAND COL ── */
+        /* ── BRAND LOGO ── */
         .ft-brand-logo {
-          display: flex; align-items: center; gap: 12px;
+          display: flex; align-items: center; gap: 14px;
           margin-bottom: 20px; cursor: pointer;
+          text-decoration: none;
         }
-        .ft-brand-icon {
-          width: 40px; height: 40px;
-          background: rgba(201,168,76,0.12);
-          border: 1px solid rgba(201,168,76,0.3);
-          display: flex; align-items: center; justify-content: center;
-          color: #c9a84c;
-          clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
-          transition: background 0.2s;
-        }
-        .ft-brand-logo:hover .ft-brand-icon { background: rgba(201,168,76,0.2); }
+
+        .ft-brand-text { display: flex; flex-direction: column; gap: 1px; }
 
         .ft-brand-name {
-          font-family: 'Playfair Display', serif;
-          font-size: 1.5rem; font-weight: 900;
-          color: #fff; letter-spacing: -0.02em;
-          line-height: 1;
+          font-family: var(--ft-font);
+          font-size: 1.6rem; font-weight: 800;
+          color: #fff; letter-spacing: 0.06em;
+          line-height: 1; text-transform: uppercase;
+          transition: color 0.2s;
         }
+        .ft-brand-logo:hover .ft-brand-name { color: var(--ft-gold); }
+
         .ft-brand-sub {
-          font-size: 0.58rem; font-weight: 500;
+          font-family: var(--ft-font);
+          font-size: 0.6rem; font-weight: 500;
           letter-spacing: 0.22em; text-transform: uppercase;
           color: rgba(201,168,76,0.5);
         }
 
         .ft-brand-desc {
-          font-size: 0.85rem; font-weight: 300;
+          font-family: var(--ft-font);
+          font-size: 0.88rem; font-weight: 400;
           line-height: 1.85; color: rgba(255,255,255,0.4);
           max-width: 340px; margin-bottom: 0;
         }
@@ -120,10 +122,11 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
           margin-bottom: 24px;
         }
         .ft-col-heading-line {
-          width: 20px; height: 1px; background: #c9a84c; flex-shrink: 0;
+          width: 20px; height: 1px; background: var(--ft-gold); flex-shrink: 0;
         }
         .ft-col-heading-text {
-          font-size: 0.62rem; font-weight: 600;
+          font-family: var(--ft-font);
+          font-size: 0.64rem; font-weight: 600;
           letter-spacing: 0.22em; text-transform: uppercase;
           color: rgba(255,255,255,0.35);
         }
@@ -133,7 +136,8 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
         .ft-nav-item a {
           display: flex; align-items: center; gap: 10px;
           padding: 8px 0;
-          font-size: 0.88rem; font-weight: 400;
+          font-family: var(--ft-font);
+          font-size: 0.9rem; font-weight: 500;
           color: rgba(255,255,255,0.45); text-decoration: none;
           border-bottom: 1px solid rgba(255,255,255,0.04);
           transition: color 0.2s, padding-left 0.2s;
@@ -145,7 +149,7 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
           transition: background 0.2s, transform 0.2s;
         }
         .ft-nav-item a:hover { color: rgba(255,255,255,0.85); padding-left: 6px; }
-        .ft-nav-item a:hover::before { background: #c9a84c; transform: scale(1.4); }
+        .ft-nav-item a:hover::before { background: var(--ft-gold); transform: scale(1.4); }
 
         /* ── BOTTOM BAR ── */
         .ft-bottom {
@@ -155,21 +159,23 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
           flex-wrap: wrap; gap: 12px;
         }
         .ft-copyright {
-          font-size: 0.72rem; color: rgba(255,255,255,0.2);
+          font-family: var(--ft-font);
+          font-size: 0.74rem; color: rgba(255,255,255,0.2);
           letter-spacing: 0.05em;
         }
-        .ft-copyright strong { color: rgba(201,168,76,0.5); font-weight: 600; }
+        .ft-copyright strong { color: var(--ft-gold-dim); font-weight: 700; }
         .ft-made {
-          font-size: 0.72rem; color: rgba(255,255,255,0.2);
+          font-family: var(--ft-font);
+          font-size: 0.74rem; color: rgba(255,255,255,0.2);
           display: flex; align-items: center; gap: 6px;
         }
-        .ft-made-heart { color: #c9a84c; font-size: 0.9rem; }
+        .ft-made-heart { color: var(--ft-gold); font-size: 0.9rem; }
 
         /* ── SCROLL TO TOP ── */
         .ft-scroll-btn {
           position: fixed; bottom: 28px; right: 28px; z-index: 99;
           width: 44px; height: 44px;
-          background: #c9a84c; color: #0a1f0e;
+          background: var(--ft-gold); color: #0a1f0e;
           border: none; cursor: pointer;
           display: flex; align-items: center; justify-content: center;
           clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
@@ -197,12 +203,9 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
             {/* ── BRAND ── */}
             <div>
               <div className="ft-brand-logo" onClick={scrollToTop}>
-                <div className="ft-brand-icon">
-                  <Leaf size={18} strokeWidth={1.5} />
-                </div>
-                <div>
+                <div className="ft-brand-text">
                   <div className="ft-brand-name">IMIRI</div>
-                  <div className="ft-brand-sub">Coopérative</div>
+                  <div className="ft-brand-sub">Compérative</div>
                 </div>
               </div>
 
@@ -241,7 +244,7 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
           {/* ── BOTTOM BAR ── */}
           <div className="ft-bottom">
             <p className="ft-copyright">
-              © {new Date().getFullYear()} <strong>IMIRI Cooperative</strong>.{' '}
+              © {new Date().getFullYear()} <strong>sinshincom</strong>.{' '}
               {tr('All rights reserved.', 'Tous droits réservés.', 'جميع الحقوق محفوظة.')}
             </p>
             <p className="ft-made">
@@ -252,7 +255,6 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
           </div>
         </div>
 
-        {/* Scroll to top */}
         <button className="ft-scroll-btn" onClick={scrollToTop} aria-label="Back to top">
           <ArrowUp size={18} strokeWidth={2} />
         </button>

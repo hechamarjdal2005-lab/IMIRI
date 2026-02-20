@@ -60,7 +60,6 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
   const fallbackMapSrc =
     'https://www.openstreetmap.org/export/embed.html?bbox=-9.65%2C30.38%2C-9.55%2C30.46&layer=mapnik&marker=30.4202%2C-9.5970';
 
-  /* ── Loading ── */
   if (loading) return (
     <section style={{ background: '#0a1f0e', padding: '140px 0', display: 'flex', justifyContent: 'center' }}>
       <style>{`@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}`}</style>
@@ -75,12 +74,11 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
     </section>
   );
 
-  /* ── Error ── */
   if (!contact) return (
     <section style={{ background: '#0a1f0e', padding: '140px 0', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' }}>
       <div style={{ textAlign: 'center' }}>
         <Mail size={40} color="#c9a84c" style={{ marginBottom: 16 }} />
-        <p style={{ color: 'rgba(255,255,255,0.5)', fontFamily: 'DM Sans, sans-serif' }}>
+        <p style={{ color: 'rgba(255,255,255,0.5)', fontFamily: "'Baloo 2', cursive" }}>
           {t('Failed to load contact info', 'Impossible de charger les contacts', 'فشل تحميل معلومات الاتصال')}
         </p>
       </div>
@@ -90,10 +88,11 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
+        /* ── COCKTAIL FONT (Baloo 2) ── */
+        @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap');
 
-        /* ── TOKENS ── */
         :root {
+          --ct-font:   'Baloo 2', cursive;
           --ct-deep:   #0a1f0e;
           --ct-dark:   #0d2b10;
           --ct-mid:    #1a4d1e;
@@ -108,11 +107,10 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
           position: relative;
           background: linear-gradient(180deg, #0d2b10 0%, #0a1f0e 60%, #0d2b10 100%);
           overflow: hidden;
-          font-family: 'DM Sans', sans-serif;
+          font-family: var(--ct-font);
           padding: 120px 0;
         }
 
-        /* Grid bg */
         .ct-grid {
           position: absolute; inset: 0; pointer-events: none; z-index: 0;
           background-image:
@@ -121,14 +119,12 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
           background-size: 80px 80px;
         }
 
-        /* Grain */
         .ct-grain {
           position: absolute; inset: 0; pointer-events: none; z-index: 0; opacity: 0.025;
           background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
           background-size: 160px;
         }
 
-        /* Gold blobs */
         .ct-blob {
           position: absolute; border-radius: 50%;
           pointer-events: none; filter: blur(80px); opacity: 0.05;
@@ -136,16 +132,13 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
         .ct-blob-1 { width:500px; height:500px; top:-80px; left:-80px; background:#c9a84c; }
         .ct-blob-2 { width:400px; height:400px; bottom:-60px; right:-60px; background:#4caf50; }
 
-        /* Inner container */
         .ct-inner {
           position: relative; z-index: 1;
           max-width: 1200px; margin: 0 auto; padding: 0 40px;
         }
 
         /* ── HEADER ── */
-        .ct-header {
-          text-align: center; margin-bottom: 72px;
-        }
+        .ct-header { text-align: center; margin-bottom: 72px; }
 
         .ct-eyebrow {
           display: inline-flex; align-items: center; gap: 12px;
@@ -156,16 +149,17 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
         .ct-eyebrow.vis { opacity: 1; transform: translateY(0); }
         .ct-eyebrow-line { width: 32px; height: 1px; background: var(--ct-gold); }
         .ct-eyebrow-text {
-          font-size: 0.62rem; font-weight: 500; letter-spacing: 0.28em;
+          font-family: var(--ct-font);
+          font-size: 0.64rem; font-weight: 600; letter-spacing: 0.24em;
           text-transform: uppercase; color: var(--ct-gold);
         }
 
         .ct-title {
-          font-family: 'Playfair Display', serif;
+          font-family: var(--ct-font);
           font-size: clamp(2.4rem, 4vw, 4rem);
-          font-weight: 900; line-height: 1;
+          font-weight: 800; line-height: 1;
           color: var(--ct-white); margin: 0 0 20px;
-          letter-spacing: -0.03em;
+          letter-spacing: -0.01em;
           opacity: 0; transform: translateY(20px);
           transition: opacity 0.7s ease 0.1s, transform 0.7s ease 0.1s;
         }
@@ -183,7 +177,8 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
         .ct-divider-diamond { width: 6px; height: 6px; background: var(--ct-gold); transform: rotate(45deg); }
 
         .ct-subtitle {
-          font-size: 0.93rem; font-weight: 300; line-height: 1.8;
+          font-family: var(--ct-font);
+          font-size: 0.95rem; font-weight: 400; line-height: 1.8;
           color: rgba(255,255,255,0.45); max-width: 380px; margin: 0 auto;
           opacity: 0; transition: opacity 0.6s ease 0.3s;
         }
@@ -217,7 +212,6 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
           transform: translateX(6px);
         }
 
-        /* Gold left accent */
         .ct-card::before {
           content: '';
           position: absolute; left: 0; top: 0; bottom: 0;
@@ -227,7 +221,6 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
         }
         .ct-card:hover::before { opacity: 1; }
 
-        /* Gold shimmer */
         .ct-card-shimmer {
           position: absolute; inset: 0;
           background: linear-gradient(110deg, transparent 20%, rgba(201,168,76,0.06) 50%, transparent 80%);
@@ -254,12 +247,14 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
         }
 
         .ct-card-title {
-          font-size: 0.62rem; font-weight: 500; letter-spacing: 0.2em;
+          font-family: var(--ct-font);
+          font-size: 0.64rem; font-weight: 600; letter-spacing: 0.18em;
           text-transform: uppercase; color: rgba(255,255,255,0.35);
           margin-bottom: 4px;
         }
         .ct-card-value {
-          font-size: 0.93rem; font-weight: 400; color: rgba(255,255,255,0.85);
+          font-family: var(--ct-font);
+          font-size: 0.95rem; font-weight: 500; color: rgba(255,255,255,0.85);
           line-height: 1.4;
         }
 
@@ -281,7 +276,8 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
         .ct-social-wrap.vis { opacity: 1; transform: translateY(0); }
 
         .ct-social-label {
-          font-size: 0.62rem; font-weight: 500; letter-spacing: 0.22em;
+          font-family: var(--ct-font);
+          font-size: 0.64rem; font-weight: 600; letter-spacing: 0.2em;
           text-transform: uppercase; color: rgba(255,255,255,0.3);
           margin-bottom: 16px;
           display: flex; align-items: center; gap: 10px;
@@ -324,7 +320,6 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
           background: var(--ct-dark);
         }
 
-        /* Map header bar */
         .ct-map-header {
           position: absolute; top: 0; left: 0; right: 0; z-index: 10;
           padding: 16px 20px;
@@ -339,11 +334,13 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
           clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
         }
         .ct-map-location-name {
-          font-family: 'Playfair Display', serif;
-          font-size: 0.95rem; font-weight: 700; color: var(--ct-white);
+          font-family: var(--ct-font);
+          font-size: 1rem; font-weight: 700; color: var(--ct-white);
         }
         .ct-map-location-sub {
-          font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+          font-family: var(--ct-font);
+          font-size: 0.66rem; font-weight: 500;
+          letter-spacing: 0.14em; text-transform: uppercase;
           color: rgba(255,255,255,0.4);
         }
 
@@ -353,14 +350,12 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
           transition: opacity 0.8s ease;
         }
 
-        /* Map bottom overlay */
         .ct-map-bottom {
           position: absolute; bottom: 0; left: 0; right: 0; height: 80px;
           background: linear-gradient(to top, rgba(10,31,14,0.8), transparent);
           pointer-events: none;
         }
 
-        /* Directions button */
         .ct-directions {
           display: inline-flex; align-items: center; gap: 10px;
           width: 100%; justify-content: center;
@@ -369,8 +364,8 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
           border: 1px solid rgba(201,168,76,0.25);
           border-top: none;
           color: var(--ct-gold);
-          font-family: 'DM Sans', sans-serif;
-          font-size: 0.72rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
+          font-family: var(--ct-font);
+          font-size: 0.75rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
           text-decoration: none;
           transition: background 0.25s, color 0.25s;
         }
@@ -438,7 +433,6 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
             {/* LEFT — Cards */}
             <div className="ct-cards">
 
-              {/* Phone / WhatsApp */}
               <a
                 href={`https://wa.me/${contact.whatsapp_number}`}
                 target="_blank" rel="noopener noreferrer"
@@ -454,7 +448,6 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
                 <Send size={14} className="ct-card-arrow" />
               </a>
 
-              {/* Email */}
               <a
                 href={`mailto:${contact.email}`}
                 className={`ct-card ${visible ? 'vis' : ''}`}
@@ -469,7 +462,6 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
                 <Send size={14} className="ct-card-arrow" />
               </a>
 
-              {/* Location */}
               <div
                 className={`ct-card ${visible ? 'vis' : ''}`}
                 style={{ transitionDelay: '0.35s', cursor: 'default' }}
@@ -482,7 +474,6 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
                 </div>
               </div>
 
-              {/* Social */}
               <div className={`ct-social-wrap ${visible ? 'vis' : ''}`} style={{ transitionDelay: '0.45s' }}>
                 <div className="ct-social-label">
                   {t('Follow Us', 'Suivez-Nous', 'تابعونا')}
@@ -510,7 +501,6 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
             {/* RIGHT — Map */}
             <div className={`ct-map-panel ${visible ? 'vis' : ''}`}>
               <div className="ct-map-wrap">
-                {/* Header */}
                 <div className="ct-map-header">
                   <div className="ct-map-pin-icon">
                     <MapPin size={16} strokeWidth={2} />
@@ -521,7 +511,6 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
                   </div>
                 </div>
 
-                {/* Map iframe */}
                 <iframe
                   src={contact.map_embed_url || fallbackMapSrc}
                   className="ct-map-iframe"
@@ -535,7 +524,6 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
                 <div className="ct-map-bottom" />
               </div>
 
-              {/* Directions */}
               <a
                 href={contact.google_maps_url || '#'}
                 target="_blank" rel="noopener noreferrer"

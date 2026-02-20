@@ -23,6 +23,14 @@ const App: React.FC = () => {
   useEffect(() => {
     document.documentElement.dir  = isRTL ? 'rtl' : 'ltr';
     document.documentElement.lang = lang;
+    // Fix full width on mobile — no horizontal scroll
+    document.documentElement.style.overflowX = 'hidden';
+    document.documentElement.style.width = '100%';
+    document.body.style.overflowX = 'hidden';
+    document.body.style.width = '100%';
+    document.body.style.maxWidth = '100vw';
+    document.body.style.margin = '0';
+    document.body.style.padding = '0';
   }, [lang, isRTL]);
 
   const addToCart = (product: Product) => {
@@ -78,24 +86,26 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className={`min-h-screen font-sans ${isRTL ? 'font-arabic' : lang === 'ama' ? 'font-tifinagh' : ''}`}>
-
+    <div
+      className={`min-h-screen font-sans ${isRTL ? 'font-arabic' : lang === 'ama' ? 'font-tifinagh' : ''}`}
+      style={{ width: '100vw', maxWidth: '100vw', overflowX: 'hidden', position: 'relative' }}
+    >
       {/* ── Admin trigger button ── */}
       <button
         onClick={() => setIsAdminMode(true)}
         title="Admin"
         style={{
           position: 'fixed',
-          bottom: 80,
-          left: 16,
+          bottom: 8,
+          left: 8,
           zIndex: 9998,
-          width: 36,
-          height: 36,
+          width: 28,
+          height: 28,
           borderRadius: '50%',
-          background: 'rgba(0,0,0,0.25)',
-          border: '1px solid rgba(255,255,255,0.1)',
-          color: 'rgba(255,255,255,0.35)',
-          fontSize: 16,
+          background: 'rgba(0,0,0,0.1)',
+          border: '1px solid rgba(255,255,255,0.04)',
+          color: 'rgba(255,255,255,0.15)',
+          fontSize: 12,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -115,7 +125,7 @@ const App: React.FC = () => {
         onCartClick={() => setIsCartOpen(true)}
       />
 
-      <main>
+      <main style={{ width: '100%', overflowX: 'hidden' }}>
         <Hero     t={t.hero}     isRTL={isRTL} lang={lang} />
         <About    lang={lang} />
         <Products t={t.products} lang={lang}   onAdd={addToCart} />

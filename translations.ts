@@ -41,13 +41,13 @@ export const translations: Record<Language, Translation> = {
   fr: {
     nav: { home: 'Accueil', about: 'À Propos', products: 'Produits', contact: 'Contact' },
     hero: { 
-      title: 'Coopérative IMIRI', 
+      title: 'Compérative IMIRI', 
       subtitle: 'La nature marocaine pure dans chaque goutte. Des produits authentiques fabriqués avec passion par des mains locales.',
       cta: 'Explorer les Produits' 
     },
     about: {
       title: 'Notre Histoire',
-      description: 'IMIRI est plus qu’une coopérative ; c’est une communauté de femmes dévouées préservant les secrets ancestraux de la beauté et de la santé naturelle marocaine.',
+      description: 'IMIRI est plus qu’une compérative ; c’est une communauté de femmes dévouées préservant les secrets ancestraux de la beauté et de la santé naturelle marocaine.',
       values: {
         natural: '100% Naturel',
         authentic: 'Pure Authenticité',

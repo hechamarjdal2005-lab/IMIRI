@@ -82,10 +82,21 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Tifinagh&display=swap');
+        /* ── COCKTAIL FONT (Baloo 2 — round, friendly, organic strokes) ── */
+        @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Noto+Sans+Tifinagh&display=swap');
 
         *, *::before, *::after { box-sizing: border-box; }
+
+        /* ── CSS VARIABLES ── */
+        :root {
+          --font-cocktail: 'Baloo 2', cursive;
+          --font-ama: 'Noto Sans Tifinagh', sans-serif;
+          --green: #80C756;
+          --green-light: #9ed96a;
+          --green-glow: rgba(128,199,86,0.4);
+          --dark: #0d1f08;
+          --dark-bg: #0f1f0a;
+        }
 
         .h-wrap {
           position: relative;
@@ -93,12 +104,14 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
           height: 100svh;
           min-height: 600px;
           overflow: hidden;
-          font-family: 'Outfit', sans-serif;
+          font-family: var(--font-cocktail);
         }
 
         .h-bg {
           position: absolute;
-          inset: -10%;
+          inset: 0;
+          width: 100%;
+          height: 100%;
           background-size: cover;
           background-position: center;
           transform: scale(1.1);
@@ -152,19 +165,20 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
         }
 
         .h-logo-text {
-          font-family: 'Outfit', sans-serif;
-          font-size: 16px;
-          font-weight: 600;
-          letter-spacing: 0.12em;
+          font-family: var(--font-cocktail);
+          font-size: 18px;
+          font-weight: 800;
+          letter-spacing: 0.14em;
           text-transform: uppercase;
           color: white;
           line-height: 1;
         }
 
         .h-logo-sub {
-          font-size: 9px;
-          font-weight: 300;
-          letter-spacing: 0.22em;
+          font-family: var(--font-cocktail);
+          font-size: 10px;
+          font-weight: 400;
+          letter-spacing: 0.18em;
           color: rgba(255,255,255,0.5);
           text-transform: uppercase;
           margin-top: 2px;
@@ -186,7 +200,8 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
           border: 1px solid rgba(255,255,255,0.15);
           border-radius: 100px;
           color: rgba(255,255,255,0.85);
-          font-size: 12px;
+          font-family: var(--font-cocktail);
+          font-size: 13px;
           font-weight: 500;
           letter-spacing: 0.04em;
           text-decoration: none;
@@ -257,49 +272,67 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
         .h-eyebrow-dot {
           width: 5px; height: 5px;
           border-radius: 50%;
-          background: #80C756;
+          background: var(--green);
           animation: blink 2.2s ease-in-out infinite;
         }
 
         @keyframes blink { 0%,100%{opacity:.45} 50%{opacity:1} }
 
         .h-eyebrow-text {
-          font-size: 10px;
+          font-family: var(--font-cocktail);
+          font-size: 11px;
           font-weight: 600;
-          letter-spacing: 0.18em;
+          letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: #9ed96a;
+          color: var(--green-light);
         }
 
+        /* ── TITLE — Cocktail bold rounded style ── */
         .h-title {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: clamp(50px, 8.5vw, 112px);
-          font-weight: 300;
-          line-height: 1.06;
+          font-family: var(--font-cocktail);
+          font-size: clamp(44px, 8vw, 100px);
+          font-weight: 800;
+          line-height: 1.08;
           color: white;
-          letter-spacing: -0.02em;
+          letter-spacing: -0.01em;
           margin-bottom: 22px;
-          max-width: 880px;
+          max-width: 900px;
         }
 
         .h-title-word {
           display: inline-block;
           opacity: 0;
           transform: translateY(36px);
-          margin-right: 0.2em;
+          margin-right: 0.22em;
         }
 
         .h-title-word.go {
           animation: up 0.7s cubic-bezier(0.16,1,0.3,1) forwards;
         }
 
+        /* Last word gets green accent — matches Cocktail's playful character */
         .h-title-em {
-          font-style: italic;
-          color: #80C756;
+          color: var(--green);
+          position: relative;
         }
 
+        .h-title-em::after {
+          content: '';
+          position: absolute;
+          bottom: -4px;
+          left: 0; right: 0;
+          height: 3px;
+          background: linear-gradient(to right, var(--green), rgba(128,199,86,0.2));
+          border-radius: 2px;
+          transform: scaleX(0);
+          transform-origin: left;
+          animation: ${mounted ? 'underline 0.5s ease forwards 1.2s' : 'none'};
+        }
+
+        @keyframes underline { to { transform: scaleX(1); } }
+
         .h-divider {
-          width: 36px; height: 1.5px;
+          width: 36px; height: 2px;
           background: linear-gradient(to right, rgba(128,199,86,0.85), rgba(128,199,86,0.15));
           border-radius: 2px;
           margin: 0 auto 24px;
@@ -312,11 +345,12 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
         @keyframes line { to { opacity:1; transform:scaleX(1); } }
 
         .h-sub {
-          font-size: clamp(14px, 2vw, 17px);
-          font-weight: 300;
-          line-height: 1.85;
+          font-family: var(--font-cocktail);
+          font-size: clamp(14px, 1.8vw, 17px);
+          font-weight: 400;
+          line-height: 1.9;
           color: rgba(255,255,255,0.65);
-          max-width: 460px;
+          max-width: 480px;
           margin-bottom: 44px;
           opacity: 0;
           transform: translateY(14px);
@@ -338,18 +372,18 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
           display: inline-flex;
           align-items: center;
           gap: 10px;
-          padding: 15px 34px;
-          background: #80C756;
-          color: #0d1f08;
-          font-family: 'Outfit', sans-serif;
-          font-size: 12px;
+          padding: 14px 34px;
+          background: var(--green);
+          color: var(--dark);
+          font-family: var(--font-cocktail);
+          font-size: 14px;
           font-weight: 700;
-          letter-spacing: 0.1em;
+          letter-spacing: 0.08em;
           text-transform: uppercase;
           text-decoration: none;
           border-radius: 100px;
           transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
-          box-shadow: 0 8px 32px rgba(128,199,86,0.4), 0 2px 8px rgba(0,0,0,0.2);
+          box-shadow: 0 8px 32px var(--green-glow), 0 2px 8px rgba(0,0,0,0.2);
           position: relative;
           overflow: hidden;
         }
@@ -385,14 +419,14 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
           display: inline-flex;
           align-items: center;
           gap: 8px;
-          padding: 15px 28px;
+          padding: 14px 28px;
           border: 1px solid rgba(255,255,255,0.28);
           border-radius: 100px;
           color: rgba(255,255,255,0.82);
-          font-family: 'Outfit', sans-serif;
-          font-size: 12px;
+          font-family: var(--font-cocktail);
+          font-size: 14px;
           font-weight: 500;
-          letter-spacing: 0.08em;
+          letter-spacing: 0.06em;
           text-transform: uppercase;
           text-decoration: none;
           backdrop-filter: blur(8px);
@@ -435,10 +469,10 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
         .h-stat:hover { background: rgba(128,199,86,0.07); }
 
         .h-stat-n {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 28px;
-          font-weight: 600;
-          color: #80C756;
+          font-family: var(--font-cocktail);
+          font-size: 30px;
+          font-weight: 800;
+          color: var(--green);
           line-height: 1;
           white-space: nowrap;
         }
@@ -450,10 +484,11 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
         }
 
         .h-stat-l {
-          font-size: 10px;
+          font-family: var(--font-cocktail);
+          font-size: 11px;
           font-weight: 400;
           color: rgba(255,255,255,0.48);
-          letter-spacing: 0.1em;
+          letter-spacing: 0.08em;
           text-transform: uppercase;
           line-height: 1.55;
         }
@@ -484,7 +519,7 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
           position: absolute;
           top: -40%; left: 0; right: 0;
           height: 40%;
-          background: #80C756;
+          background: var(--green);
           border-radius: 1px;
           animation: scrollRun 1.8s ease-in-out infinite;
         }
@@ -492,6 +527,7 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
         @keyframes scrollRun { 0%{top:-40%} 100%{top:140%} }
 
         .h-scroll-lbl {
+          font-family: var(--font-cocktail);
           font-size: 9px;
           letter-spacing: 0.2em;
           text-transform: uppercase;
@@ -520,17 +556,19 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
         }
 
         .h-badge-n {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 38px;
-          font-weight: 600;
-          color: #80C756;
+          font-family: var(--font-cocktail);
+          font-size: 42px;
+          font-weight: 800;
+          color: var(--green);
           line-height: 1;
         }
 
         .h-badge-t {
-          font-size: 10px;
+          font-family: var(--font-cocktail);
+          font-size: 11px;
+          font-weight: 500;
           color: rgba(255,255,255,0.5);
-          letter-spacing: 0.12em;
+          letter-spacing: 0.1em;
           text-transform: uppercase;
           text-align: center;
           line-height: 1.6;
@@ -539,19 +577,25 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
         @keyframes up    { to { opacity:1; transform:translateY(0); } }
         @keyframes fadeIn { to { opacity: 1; } }
 
+        /* ── TIFINAGH (Amazigh) ── */
+        .lang-ama {
+          font-family: var(--font-ama) !important;
+          font-weight: 400 !important;
+        }
+
         /* ══ MOBILE ══ */
         @media (max-width: 768px) {
           .h-nav { padding: 18px 20px; }
           .h-nav-pill { display: none; }
           .h-content { padding: 96px 20px 120px; }
-          .h-title { font-size: clamp(42px, 10vw, 64px); }
+          .h-title { font-size: clamp(36px, 10vw, 58px); }
           .h-sub { max-width: 100%; font-size: 14px; }
           .h-actions { gap: 12px; }
-          .h-cta, .h-ghost { padding: 13px 26px; font-size: 11px; }
+          .h-cta, .h-ghost { padding: 12px 24px; font-size: 13px; }
           .h-badge { display: none; }
           .h-scroll { display: none; }
           .h-stat { padding: 16px 16px; gap: 10px; }
-          .h-stat-n { font-size: 22px; }
+          .h-stat-n { font-size: 24px; }
           .h-stat-l { font-size: 9px; }
         }
 
@@ -600,13 +644,15 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
             <div className="h-eyebrow-dot" />
             <span className="h-eyebrow-text">
               {lang === 'ar' ? 'تعاونية إيميري الزراعية' :
-               lang === 'fr' ? 'Coopérative Agricole Imiri' :
-               'Imiri Agricultural Cooperative'}
+               lang === 'fr' ? 'Compérative Agricole Imiri' :
+               'Imiri Agricultural Comperative'}
             </span>
           </div>
 
-          <h1 className={`h-title ${lang === 'ama' ? 'lang-ama' : ''}`}
-              style={lang === 'ama' ? { fontFamily: "'Noto Sans Tifinagh', sans-serif" } : {}}>
+          <h1
+            className={`h-title ${lang === 'ama' ? 'lang-ama' : ''}`}
+            style={lang === 'ama' ? { fontFamily: "'Noto Sans Tifinagh', sans-serif" } : {}}
+          >
             {words.map((word, i) => (
               <span
                 key={i}
@@ -620,8 +666,10 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
 
           <div className="h-divider" />
 
-          <p className="h-sub"
-             style={lang === 'ama' ? { fontFamily: "'Noto Sans Tifinagh', sans-serif" } : {}}>
+          <p
+            className="h-sub"
+            style={lang === 'ama' ? { fontFamily: "'Noto Sans Tifinagh', sans-serif" } : {}}
+          >
             {subtitle}
           </p>
 
@@ -653,13 +701,12 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
           </div>
         </div>
 
-        {/* Scroll */}
+        {/* Scroll indicator */}
         <div className="h-scroll">
           <div className="h-scroll-track"><div className="h-scroll-run" /></div>
           <span className="h-scroll-lbl">Scroll</span>
         </div>
 
-     
       </section>
     </>
   );

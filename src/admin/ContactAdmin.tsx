@@ -130,7 +130,7 @@ export const ContactAdmin: React.FC<{ adminLang: AdminLang }> = ({ adminLang }) 
         </div>
         <div>
           <label style={lbl}>{t.whatsapp}</label>
-          <input style={inp} placeholder="+212600000000" value={data.whatsapp_number}
+          <input style={inp} placeholder="+212661675643" value={data.whatsapp_number}
             onChange={e => set('whatsapp_number', e.target.value)} />
         </div>
       </div>

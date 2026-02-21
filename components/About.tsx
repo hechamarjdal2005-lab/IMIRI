@@ -91,7 +91,12 @@ const About: React.FC<AboutProps> = ({ lang }) => {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap');
+        /* ── COCKTAIL FONT (Baloo 2) ── */
+        @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap');
+
+        :root {
+          --ab-font: 'Baloo 2', cursive;
+        }
 
         @keyframes ab-up    { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
         @keyframes ab-left  { from{opacity:0;transform:translateX(-20px)} to{opacity:1;transform:translateX(0)} }
@@ -103,10 +108,9 @@ const About: React.FC<AboutProps> = ({ lang }) => {
           position: relative;
           background: #0a1f0e;
           overflow: hidden;
-          font-family: 'DM Sans', sans-serif;
+          font-family: var(--ab-font);
         }
 
-        /* subtle grain */
         .ab::before {
           content: '';
           position: absolute; inset: 0;
@@ -135,7 +139,6 @@ const About: React.FC<AboutProps> = ({ lang }) => {
           z-index: 2;
         }
 
-        /* single subtle circle */
         .ab-circle {
           position: absolute;
           width: 420px; height: 420px;
@@ -156,16 +159,17 @@ const About: React.FC<AboutProps> = ({ lang }) => {
         .ab-tag.vis { animation: ab-left 0.6s 0.1s ease forwards; }
         .ab-tag-line { width: 28px; height: 1.5px; background: #c9a84c; }
         .ab-tag-txt {
-          font-size: 0.6rem; font-weight: 500;
-          letter-spacing: 0.25em; text-transform: uppercase; color: #c9a84c;
+          font-family: var(--ab-font);
+          font-size: 0.62rem; font-weight: 600;
+          letter-spacing: 0.22em; text-transform: uppercase; color: #c9a84c;
         }
 
         /* ── HEADING ── */
         .ab-h {
-          font-family: 'Playfair Display', serif;
+          font-family: var(--ab-font);
           font-size: clamp(2.4rem, 3.8vw, 4rem);
-          font-weight: 900; line-height: 1.05;
-          letter-spacing: -0.03em; color: #fff;
+          font-weight: 800; line-height: 1.05;
+          letter-spacing: -0.01em; color: #fff;
           margin: 0; opacity: 0;
         }
         .ab-h.vis { animation: ab-up 0.7s 0.2s ease forwards; }
@@ -182,7 +186,8 @@ const About: React.FC<AboutProps> = ({ lang }) => {
 
         /* ── DESC ── */
         .ab-desc {
-          font-size: 0.92rem; font-weight: 300; line-height: 1.9;
+          font-family: var(--ab-font);
+          font-size: 0.92rem; font-weight: 400; line-height: 1.9;
           color: rgba(255,255,255,0.65);
           max-width: 360px; margin-bottom: 40px;
           opacity: 0;
@@ -216,7 +221,8 @@ const About: React.FC<AboutProps> = ({ lang }) => {
         }
 
         .ab-val-txt {
-          font-size: 0.85rem; font-weight: 400;
+          font-family: var(--ab-font);
+          font-size: 0.88rem; font-weight: 500;
           color: rgba(255,255,255,0.72); line-height: 1.4;
         }
 
@@ -241,21 +247,18 @@ const About: React.FC<AboutProps> = ({ lang }) => {
         }
         .ab-img:hover img { transform: scale(1.03); }
 
-        /* edge gradient matching clip-path */
         .ab-img-edge {
           position: absolute; inset: 0;
           background: linear-gradient(to right, #0d2b10 0%, rgba(13,43,16,0.4) 18%, transparent 55%);
           pointer-events: none;
         }
 
-        /* bottom gradient */
         .ab-img-bottom {
           position: absolute; bottom: 0; left: 0; right: 0; height: 40%;
           background: linear-gradient(to top, rgba(10,31,14,0.85) 0%, transparent 100%);
           pointer-events: none;
         }
 
-        /* leaf icon badge */
         .ab-leaf-badge {
           position: absolute; top: 24px; right: 24px;
           width: 52px; height: 52px; border-radius: 50%;
@@ -266,7 +269,6 @@ const About: React.FC<AboutProps> = ({ lang }) => {
           color: #c9a84c;
         }
 
-        /* year label */
         .ab-year {
           position: absolute; bottom: 24px; left: 24px;
           padding: 10px 18px;
@@ -276,11 +278,13 @@ const About: React.FC<AboutProps> = ({ lang }) => {
           display: flex; flex-direction: column; gap: 2px;
         }
         .ab-year-n {
-          font-family: 'Playfair Display', serif;
-          font-size: 1.5rem; font-weight: 900; line-height: 1; color: #c9a84c;
+          font-family: var(--ab-font);
+          font-size: 1.6rem; font-weight: 800; line-height: 1; color: #c9a84c;
         }
         .ab-year-l {
-          font-size: 0.58rem; letter-spacing: 0.2em;
+          font-family: var(--ab-font);
+          font-size: 0.6rem; font-weight: 500;
+          letter-spacing: 0.18em;
           text-transform: uppercase; color: rgba(255,255,255,0.45);
         }
 
@@ -303,18 +307,17 @@ const About: React.FC<AboutProps> = ({ lang }) => {
         .ab-stat:last-child { border-right: none; }
 
         .ab-stat-n {
-          font-family: 'Playfair Display', serif;
-          font-size: 2.2rem; font-weight: 900; line-height: 1;
-          color: #c9a84c; letter-spacing: -0.04em;
+          font-family: var(--ab-font);
+          font-size: 2.2rem; font-weight: 800; line-height: 1;
+          color: #c9a84c; letter-spacing: -0.02em;
           opacity: 0;
         }
-        .ab-stat-n.vis {
-          animation: ab-up 0.6s ease forwards;
-        }
+        .ab-stat-n.vis { animation: ab-up 0.6s ease forwards; }
 
         .ab-stat-l {
-          font-size: 0.6rem; font-weight: 500;
-          letter-spacing: 0.18em; text-transform: uppercase;
+          font-family: var(--ab-font);
+          font-size: 0.62rem; font-weight: 500;
+          letter-spacing: 0.16em; text-transform: uppercase;
           color: rgba(255,255,255,0.45);
         }
 
@@ -351,27 +354,22 @@ const About: React.FC<AboutProps> = ({ lang }) => {
           <div className="ab-left">
             <div className="ab-circle" />
 
-            {/* Tag */}
             <div className={`ab-tag ${visible ? 'vis' : ''}`}>
               <div className="ab-tag-line" />
               <span className="ab-tag-txt">{getText('section_label')}</span>
             </div>
 
-            {/* Heading */}
             <h2 className={`ab-h ${visible ? 'vis' : ''}`}>
               {titleLine1}
               {titleLine2 && <span className="ab-h-em">{titleLine2}</span>}
             </h2>
 
-            {/* Rule */}
             <div className={`ab-rule ${visible ? 'vis' : ''}`} />
 
-            {/* Description */}
             <p className={`ab-desc ${visible ? 'vis' : ''}`}>
               {getText('story_description')}
             </p>
 
-            {/* Values */}
             <div className={`ab-vals ${visible ? 'vis' : ''}`}>
               {about.values.map((value: any, i: number) => (
                 <div key={i} className="ab-val">
@@ -385,7 +383,6 @@ const About: React.FC<AboutProps> = ({ lang }) => {
           {/* ── RIGHT ── */}
           <div className="ab-right">
 
-            {/* Image */}
             <div className={`ab-img ${visible ? 'vis' : ''}`}>
               <img src={about.image_url} alt={getText('story_title')} loading="lazy" />
               <div className="ab-img-edge" />
@@ -403,7 +400,6 @@ const About: React.FC<AboutProps> = ({ lang }) => {
               </div>
             </div>
 
-            {/* Stats */}
             <div className={`ab-stats ${visible ? 'vis' : ''}`}>
               {stats.map((s, i) => (
                 <div key={i} className="ab-stat">

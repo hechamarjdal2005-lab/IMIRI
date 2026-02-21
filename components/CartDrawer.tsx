@@ -1,7 +1,6 @@
-import React from 'react';
-import { X, Minus, Plus, ShoppingBasket, MessageCircle, ArrowRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, Minus, Plus, ShoppingBasket, MessageCircle, ArrowRight, Phone } from 'lucide-react';
 import { CartItem, Language } from '../types';
-import { SOCIAL_LINKS } from '../constants';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -15,6 +14,7 @@ interface CartDrawerProps {
     total: string;
     sendOrder: string;
     items: string;
+    phonePlaceholder?: string;
   };
   lang: Language;
 }
@@ -22,17 +22,41 @@ interface CartDrawerProps {
 const CartDrawer: React.FC<CartDrawerProps> = ({
   isOpen, onClose, cart, onRemove, onUpdateQty, t, lang
 }) => {
+  const [customerPhone, setCustomerPhone] = useState('');
   const total  = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
   const isRTL  = lang === 'ar' || lang === 'ama';
 
+  // Format phone for display (Moroccan format: 06 XX XX XX XX)
+  const formatPhoneDisplay = (phone: string) => {
+    const digits = phone.replace(/\D/g, '').slice(0, 10);
+    if (digits.length <= 2) return digits;
+    if (digits.length <= 4) return `${digits.slice(0,2)} ${digits.slice(2)}`;
+    if (digits.length <= 6) return `${digits.slice(0,2)} ${digits.slice(2,4)} ${digits.slice(4)}`;
+    if (digits.length <= 8) return `${digits.slice(0,2)} ${digits.slice(2,4)} ${digits.slice(4,6)} ${digits.slice(6)}`;
+    return `${digits.slice(0,2)} ${digits.slice(2,4)} ${digits.slice(4,6)} ${digits.slice(6,8)} ${digits.slice(8)}`;
+  };
+
   const sendToWhatsApp = () => {
-    let message = `*IMIRI — New Order*\n\n`;
+    // Your WhatsApp number (Morocco: +212)
+    const YOUR_NUMBER = '212661675643';
+    
+    let message = `*🌿 IMIRI — Nouvelle Commande*\n\n`;
+    message += `*📋 Détails:*\n`;
     cart.forEach(item => {
       message += `• ${item.quantity}× ${item.product.name[lang]} — ${item.product.price * item.quantity} DH\n`;
     });
-    message += `\n*Total: ${total} DH*\n\nPlease confirm my order.`;
+    message += `\n*💰 Total: ${total} DH*`;
+    
+    if (customerPhone.trim()) {
+      message += `\n\n*📞 Client:* ${customerPhone}`;
+    } else {
+      message += `\n\n*⚠️ Attention:* Numéro de téléphone non fourni`;
+    }
+    
+    message += `\n\nMerci de confirmer ma commande. 🙏`;
+    
     window.open(
-      `https://wa.me/${SOCIAL_LINKS.whatsapp.replace('+', '')}?text=${encodeURIComponent(message)}`,
+      `https://wa.me/${YOUR_NUMBER}?text=${encodeURIComponent(message)}`,
       '_blank'
     );
   };
@@ -42,7 +66,14 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
+        /* ── COCKTAIL FONT (Baloo 2) ── */
+        @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap');
+
+        :root {
+          --cd-font: 'Baloo 2', cursive;
+          --cd-gold: #c9a84c;
+          --cd-dark: #0a1f0e;
+        }
 
         /* ── BACKDROP ── */
         .cd-backdrop {
@@ -59,7 +90,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
           width: 100%; max-width: 420px;
           background: linear-gradient(180deg, #0d2b10 0%, #0a1f0e 100%);
           display: flex; flex-direction: column;
-          font-family: 'DM Sans', sans-serif;
+          font-family: var(--cd-font);
           border-left: 1px solid rgba(201,168,76,0.15);
           animation: cdSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
@@ -73,10 +104,9 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
         @keyframes cdSlideIn    { from { transform: translateX(100%); } to { transform: translateX(0); } }
         @keyframes cdSlideInRTL { from { transform: translateX(-100%); } to { transform: translateX(0); } }
 
-        /* Grain overlay */
         .cd-grain {
           position: absolute; inset: 0; pointer-events: none; z-index: 0; opacity: 0.025;
-          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+          background-image: url("image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
           background-size: 160px;
         }
 
@@ -88,8 +118,6 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
           background: linear-gradient(to bottom, rgba(26,77,30,0.5), transparent);
           flex-shrink: 0;
         }
-
-        /* Gold top accent */
         .cd-header::before {
           content: '';
           position: absolute; top: 0; left: 0; right: 0; height: 2px;
@@ -99,7 +127,6 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
         .cd-header-row {
           display: flex; align-items: center; justify-content: space-between; gap: 12px;
         }
-
         .cd-header-left { display: flex; align-items: center; gap: 14px; }
 
         .cd-header-icon {
@@ -107,18 +134,19 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
           background: rgba(201,168,76,0.1);
           border: 1px solid rgba(201,168,76,0.25);
           display: flex; align-items: center; justify-content: center;
-          color: #c9a84c;
+          color: var(--cd-gold);
           clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
         }
 
         .cd-header-title {
-          font-family: 'Playfair Display', serif;
-          font-size: 1.25rem; font-weight: 900; color: #fff;
-          letter-spacing: -0.02em; line-height: 1;
+          font-family: var(--cd-font);
+          font-size: 1.3rem; font-weight: 800; color: #fff;
+          letter-spacing: 0.01em; line-height: 1;
         }
         .cd-header-count {
-          font-size: 0.65rem; font-weight: 500;
-          letter-spacing: 0.18em; text-transform: uppercase;
+          font-family: var(--cd-font);
+          font-size: 0.67rem; font-weight: 500;
+          letter-spacing: 0.16em; text-transform: uppercase;
           color: rgba(201,168,76,0.6); margin-top: 3px;
         }
 
@@ -164,20 +192,22 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
           clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
         }
         .cd-empty-title {
-          font-family: 'Playfair Display', serif;
-          font-size: 1.1rem; font-weight: 700; color: rgba(255,255,255,0.6);
+          font-family: var(--cd-font);
+          font-size: 1.15rem; font-weight: 700; color: rgba(255,255,255,0.6);
         }
         .cd-empty-sub {
-          font-size: 0.8rem; color: rgba(255,255,255,0.25); margin-top: -12px;
+          font-family: var(--cd-font);
+          font-size: 0.82rem; font-weight: 400;
+          color: rgba(255,255,255,0.25); margin-top: -12px;
         }
         .cd-empty-btn {
           padding: 12px 28px;
           background: rgba(201,168,76,0.1);
           border: 1px solid rgba(201,168,76,0.25);
-          color: #c9a84c;
-          font-family: 'DM Sans', sans-serif;
-          font-size: 0.78rem; font-weight: 600;
-          letter-spacing: 0.15em; text-transform: uppercase;
+          color: var(--cd-gold);
+          font-family: var(--cd-font);
+          font-size: 0.8rem; font-weight: 700;
+          letter-spacing: 0.12em; text-transform: uppercase;
           cursor: pointer;
           clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
           transition: background 0.2s;
@@ -199,8 +229,6 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
           border-color: rgba(201,168,76,0.2);
           background: rgba(201,168,76,0.03);
         }
-
-        /* Gold left accent */
         .cd-item::before {
           content: '';
           position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
@@ -221,21 +249,22 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
         }
         .cd-item:hover .cd-item-img img { transform: scale(1.08); }
 
-        /* Qty badge on image */
         .cd-item-qty-badge {
           position: absolute; top: 4px; right: 4px;
           width: 20px; height: 20px;
-          background: #c9a84c; color: #0a1f0e;
-          font-size: 0.62rem; font-weight: 700;
+          background: var(--cd-gold); color: #0a1f0e;
+          font-family: var(--cd-font);
+          font-size: 0.65rem; font-weight: 800;
           display: flex; align-items: center; justify-content: center;
           clip-path: polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px));
         }
 
         .cd-item-body { flex: 1; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-
         .cd-item-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+
         .cd-item-name {
-          font-size: 0.88rem; font-weight: 600; color: rgba(255,255,255,0.85);
+          font-family: var(--cd-font);
+          font-size: 0.9rem; font-weight: 600; color: rgba(255,255,255,0.85);
           line-height: 1.3;
           display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
         }
@@ -252,11 +281,10 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
         .cd-item-bottom { display: flex; justify-content: space-between; align-items: center; }
 
         .cd-item-price {
-          font-family: 'Playfair Display', serif;
-          font-size: 1.05rem; font-weight: 700; color: #c9a84c;
+          font-family: var(--cd-font);
+          font-size: 1.1rem; font-weight: 800; color: var(--cd-gold);
         }
 
-        /* Qty controls */
         .cd-qty {
           display: flex; align-items: center; gap: 0;
           border: 1px solid rgba(201,168,76,0.2);
@@ -270,11 +298,12 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
           display: flex; align-items: center; justify-content: center;
           transition: background 0.15s, color 0.15s;
         }
-        .cd-qty-btn:hover { background: rgba(201,168,76,0.18); color: #c9a84c; }
+        .cd-qty-btn:hover { background: rgba(201,168,76,0.18); color: var(--cd-gold); }
         .cd-qty-num {
           width: 28px; height: 28px;
           display: flex; align-items: center; justify-content: center;
-          font-size: 0.8rem; font-weight: 600; color: rgba(255,255,255,0.8);
+          font-family: var(--cd-font);
+          font-size: 0.82rem; font-weight: 700; color: rgba(255,255,255,0.8);
           border-left: 1px solid rgba(201,168,76,0.12);
           border-right: 1px solid rgba(201,168,76,0.12);
           background: rgba(255,255,255,0.02);
@@ -294,28 +323,66 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
           margin-bottom: 16px;
         }
         .cd-total-label {
-          font-size: 0.7rem; font-weight: 500;
-          letter-spacing: 0.2em; text-transform: uppercase;
+          font-family: var(--cd-font);
+          font-size: 0.72rem; font-weight: 600;
+          letter-spacing: 0.18em; text-transform: uppercase;
           color: rgba(255,255,255,0.3);
         }
         .cd-total-val {
-          font-family: 'Playfair Display', serif;
-          font-size: 1.8rem; font-weight: 900; color: #c9a84c;
-          letter-spacing: -0.03em; line-height: 1;
+          font-family: var(--cd-font);
+          font-size: 1.9rem; font-weight: 800; color: var(--cd-gold);
+          letter-spacing: -0.01em; line-height: 1;
         }
         .cd-total-sub {
-          font-size: 0.62rem; color: rgba(255,255,255,0.2);
+          font-family: var(--cd-font);
+          font-size: 0.64rem; font-weight: 400;
+          color: rgba(255,255,255,0.2);
           text-align: right; margin-top: 2px;
-          font-family: 'DM Sans', sans-serif; font-weight: 300;
+        }
+
+        /* ── PHONE INPUT ── */
+        .cd-phone-wrap {
+          margin-bottom: 14px;
+        }
+        .cd-phone-label {
+          display: flex; align-items: center; gap: 6px;
+          font-family: var(--cd-font);
+          font-size: 0.68rem; font-weight: 600;
+          letter-spacing: 0.14em; text-transform: uppercase;
+          color: rgba(255,255,255,0.4);
+          margin-bottom: 8px;
+        }
+        .cd-phone-input {
+          width: 100%;
+          padding: 12px 14px;
+          background: rgba(255,255,255,0.04);
+          border: 1px solid rgba(201,168,76,0.15);
+          border-radius: 4px;
+          color: #fff;
+          font-family: var(--cd-font);
+          font-size: 0.9rem;
+          outline: none;
+          transition: border-color 0.2s, background 0.2s;
+        }
+        .cd-phone-input::placeholder { color: rgba(255,255,255,0.25); }
+        .cd-phone-input:focus {
+          border-color: var(--cd-gold);
+          background: rgba(201,168,76,0.04);
+        }
+        .cd-phone-hint {
+          font-family: var(--cd-font);
+          font-size: 0.65rem;
+          color: rgba(201,168,76,0.5);
+          margin-top: 4px;
         }
 
         /* WhatsApp CTA */
         .cd-wa-btn {
           width: 100%; padding: 16px 0;
-          background: #c9a84c; color: #0a1f0e;
-          font-family: 'DM Sans', sans-serif;
-          font-size: 0.8rem; font-weight: 700;
-          letter-spacing: 0.18em; text-transform: uppercase;
+          background: var(--cd-gold); color: #0a1f0e;
+          font-family: var(--cd-font);
+          font-size: 0.82rem; font-weight: 800;
+          letter-spacing: 0.14em; text-transform: uppercase;
           border: none; cursor: pointer;
           display: flex; align-items: center; justify-content: center; gap: 10px;
           clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
@@ -342,13 +409,14 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
         }
         .cd-wa-btn:active { transform: translateY(0) scale(0.99); }
 
-        /* Trust badges */
         .cd-trust {
           display: flex; align-items: center; justify-content: center; gap: 20px;
         }
         .cd-trust-item {
           display: flex; align-items: center; gap: 5px;
-          font-size: 0.65rem; color: rgba(255,255,255,0.2);
+          font-family: var(--cd-font);
+          font-size: 0.67rem; font-weight: 500;
+          color: rgba(255,255,255,0.2);
           letter-spacing: 0.05em;
         }
         .cd-trust-dot {
@@ -362,10 +430,8 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
         }
       `}</style>
 
-      {/* Backdrop */}
       <div className="cd-backdrop" onClick={onClose} />
 
-      {/* Drawer */}
       <div className={`cd-drawer ${isRTL ? 'rtl' : ''}`} dir={isRTL ? 'rtl' : 'ltr'}>
         <div className="cd-grain" />
 
@@ -415,13 +481,10 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
                 className="cd-item"
                 style={{ animationDelay: `${i * 60}ms` }}
               >
-                {/* Image */}
                 <div className="cd-item-img">
                   <img src={item.product.image} alt={item.product.name[lang]} loading="lazy" />
                   <div className="cd-item-qty-badge">{item.quantity}</div>
                 </div>
-
-                {/* Body */}
                 <div className="cd-item-body">
                   <div className="cd-item-top">
                     <span className="cd-item-name">{item.product.name[lang]}</span>
@@ -452,7 +515,6 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
         {/* ── FOOTER ── */}
         {cart.length > 0 && (
           <div className="cd-footer">
-            {/* Total */}
             <div className="cd-total-row">
               <span className="cd-total-label">{t.total}</span>
               <div>
@@ -465,14 +527,34 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
               </div>
             </div>
 
-            {/* WhatsApp button */}
+            {/* ── PHONE INPUT ── */}
+            <div className="cd-phone-wrap">
+              <label className="cd-phone-label">
+                <Phone size={11} />
+                <span>{lang === 'ar' ? 'رقم الهاتف' : lang === 'fr' ? 'Téléphone' : 'Phone Number'}</span>
+              </label>
+              <input
+                type="tel"
+                className="cd-phone-input"
+                placeholder={lang === 'ar' ? '06 XX XX XX XX' : '06 XX XX XX XX'}
+                value={formatPhoneDisplay(customerPhone)}
+                onChange={(e) => setCustomerPhone(e.target.value.replace(/\D/g, ''))}
+                maxLength={10}
+                dir="ltr"
+              />
+              <div className="cd-phone-hint">
+                {lang === 'ar' ? 'مثال: 06 12 34 56 78' :
+                 lang === 'fr' ? 'Ex: 06 12 34 56 78' :
+                 'Ex: 06 12 34 56 78'}
+              </div>
+            </div>
+
             <button className="cd-wa-btn" onClick={sendToWhatsApp}>
               <MessageCircle size={16} strokeWidth={1.8} />
               <span>{t.sendOrder}</span>
               <ArrowRight size={14} strokeWidth={2} />
             </button>
 
-            {/* Trust */}
             <div className="cd-trust">
               <div className="cd-trust-item">
                 <div className="cd-trust-dot" />

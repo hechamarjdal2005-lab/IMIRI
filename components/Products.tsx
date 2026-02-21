@@ -38,26 +38,19 @@ const ProductCard: React.FC<{
       {/* IMAGE */}
       <div className="pc-img">
         <img src={product.image} alt={product.name[lang]} loading="lazy" />
-
-        {/* shimmer on hover */}
         <div className="pc-shimmer" />
-
-        {/* dark gradient bottom */}
         <div className="pc-grad" />
 
-        {/* organic badge */}
         <div className="pc-organic">
           <Leaf size={7} strokeWidth={2} />
           <span>{lang === 'ar' ? 'طبيعي' : lang === 'fr' ? 'Bio' : 'Organic'}</span>
         </div>
 
-        {/* price */}
         <div className="pc-price">
           {product.price}
           <span className="pc-price-u"> {product.priceLabel}</span>
         </div>
 
-        {/* desktop hover CTA */}
         <div className="pc-hover-cta">
           <button className="pc-hover-btn" onClick={handleAdd}>
             <ShoppingBag size={13} />
@@ -65,7 +58,6 @@ const ProductCard: React.FC<{
           </button>
         </div>
 
-        {/* stars on image */}
         <div className="pc-stars">
           {[1,2,3,4,5].map(s => (
             <Star key={s} size={8} fill="#c9a84c" color="#c9a84c" strokeWidth={0} />
@@ -78,7 +70,6 @@ const ProductCard: React.FC<{
         <h3 className="pc-name">{product.name[lang]}</h3>
         <p className="pc-desc">{product.description[lang]}</p>
 
-        {/* mobile add button */}
         <button className={`pc-add ${added ? 'pc-add-done' : ''}`} onClick={handleAdd}>
           {added ? (
             <>
@@ -156,7 +147,7 @@ const Products: React.FC<ProductsProps> = ({ t, lang, onAdd }) => {
     position: 'relative',
     background: 'linear-gradient(180deg, #0a1f0e 0%, #0d2b10 50%, #0a1f0e 100%)',
     overflow: 'hidden',
-    fontFamily: "'DM Sans', sans-serif",
+    fontFamily: "'Baloo 2', cursive",
   };
 
   if (loading) return (
@@ -181,7 +172,7 @@ const Products: React.FC<ProductsProps> = ({ t, lang, onAdd }) => {
         <button onClick={fetchProducts} style={{
           padding:'10px 28px', background:'#c9a84c', color:'#0a1f0e',
           fontWeight:700, border:'none', cursor:'pointer', borderRadius:2,
-          fontFamily:'DM Sans,sans-serif', fontSize:'0.78rem', letterSpacing:'0.15em',
+          fontFamily:"'Baloo 2', cursive", fontSize:'0.78rem', letterSpacing:'0.15em',
         }}>
           {lang === 'ar' ? 'إعادة المحاولة' : lang === 'fr' ? 'Réessayer' : 'Retry'}
         </button>
@@ -192,7 +183,12 @@ const Products: React.FC<ProductsProps> = ({ t, lang, onAdd }) => {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
+        /* ── COCKTAIL FONT (Baloo 2) ── */
+        @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap');
+
+        :root {
+          --pr-font: 'Baloo 2', cursive;
+        }
 
         /* ── SECTION DECO ── */
         .pr-s { padding: 100px 0 80px; }
@@ -216,7 +212,7 @@ const Products: React.FC<ProductsProps> = ({ t, lang, onAdd }) => {
           background-size: 160px;
         }
 
-        /* ── HEADER ── */
+        /* ── HEADER ─ */
         .pr-head {
           position: relative; z-index: 1;
           text-align: center; margin-bottom: 60px; padding: 0 20px;
@@ -231,15 +227,16 @@ const Products: React.FC<ProductsProps> = ({ t, lang, onAdd }) => {
         .pr-eyebrow.vis { opacity: 1; transform: translateY(0); }
         .pr-eyebrow-line { width: 28px; height: 1px; background: #c9a84c; }
         .pr-eyebrow-text {
-          font-size: 0.6rem; font-weight: 500; letter-spacing: 0.28em;
+          font-family: var(--pr-font);
+          font-size: 0.62rem; font-weight: 600; letter-spacing: 0.24em;
           text-transform: uppercase; color: #c9a84c;
         }
 
         .pr-title {
-          font-family: 'Playfair Display', serif;
+          font-family: var(--pr-font);
           font-size: clamp(2.2rem, 5vw, 4rem);
-          font-weight: 900; line-height: 1.05; color: #fff;
-          margin: 0 0 16px; letter-spacing: -0.03em;
+          font-weight: 800; line-height: 1.05; color: #fff;
+          margin: 0 0 16px; letter-spacing: -0.01em;
           opacity: 0; transform: translateY(20px);
           transition: opacity 0.7s ease 0.1s, transform 0.7s ease 0.1s;
         }
@@ -257,13 +254,14 @@ const Products: React.FC<ProductsProps> = ({ t, lang, onAdd }) => {
         .pr-diamond { width: 5px; height: 5px; background: #c9a84c; transform: rotate(45deg); }
 
         .pr-sub {
-          font-size: 0.88rem; font-weight: 300; line-height: 1.8;
+          font-family: var(--pr-font);
+          font-size: 0.9rem; font-weight: 400; line-height: 1.8;
           color: rgba(255,255,255,0.45); max-width: 380px; margin: 0 auto;
           opacity: 0; transition: opacity 0.6s ease 0.3s;
         }
         .pr-sub.vis { opacity: 1; }
 
-        /* ── GRID ── */
+        /* ── GRID ─ */
         .pr-grid {
           position: relative; z-index: 1;
           display: grid;
@@ -271,12 +269,13 @@ const Products: React.FC<ProductsProps> = ({ t, lang, onAdd }) => {
           padding: 0 12px;
           max-width: 1200px; margin: 0 auto;
           grid-template-columns: repeat(2, 1fr);
+          align-items: stretch;
         }
         @media (min-width: 600px)  { .pr-grid { gap: 16px; padding: 0 24px; grid-template-columns: repeat(2, 1fr); } }
         @media (min-width: 860px)  { .pr-grid { gap: 18px; padding: 0 32px; grid-template-columns: repeat(3, 1fr); } }
         @media (min-width: 1100px) { .pr-grid { gap: 20px; padding: 0 40px; grid-template-columns: repeat(4, 1fr); } }
 
-        /* ── CARD ── */
+        /* ── CARD ─ */
         .pc {
           background: #0d2b10;
           border-radius: 6px;
@@ -289,6 +288,9 @@ const Products: React.FC<ProductsProps> = ({ t, lang, onAdd }) => {
             border-color 0.3s ease,
             box-shadow 0.3s ease;
           cursor: pointer;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
         }
         .pc-vis { opacity: 1; transform: translateY(0); }
         .pc:hover {
@@ -302,6 +304,7 @@ const Products: React.FC<ProductsProps> = ({ t, lang, onAdd }) => {
           aspect-ratio: 1 / 1;
           overflow: hidden;
           background: #0a2010;
+          flex-shrink: 0;
         }
         .pc-img img {
           width: 100%; height: 100%; object-fit: cover;
@@ -334,9 +337,9 @@ const Products: React.FC<ProductsProps> = ({ t, lang, onAdd }) => {
           backdrop-filter: blur(6px);
           border: 1px solid rgba(201,168,76,0.3);
           border-radius: 2px;
-          font-family: 'DM Sans', sans-serif;
-          font-size: 8px; font-weight: 500;
-          letter-spacing: 0.15em; text-transform: uppercase;
+          font-family: var(--pr-font);
+          font-size: 8px; font-weight: 600;
+          letter-spacing: 0.12em; text-transform: uppercase;
           color: #c9a84c;
         }
 
@@ -344,13 +347,13 @@ const Products: React.FC<ProductsProps> = ({ t, lang, onAdd }) => {
           position: absolute; top: 7px; right: 7px;
           background: #c9a84c;
           color: #0a1f0e;
-          font-family: 'Playfair Display', serif;
-          font-size: 14px; font-weight: 900;
+          font-family: var(--pr-font);
+          font-size: 14px; font-weight: 800;
           padding: 5px 10px;
           clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
           line-height: 1;
         }
-        .pc-price-u { font-size: 8px; font-weight: 400; font-family: 'DM Sans', sans-serif; }
+        .pc-price-u { font-size: 8px; font-weight: 400; font-family: var(--pr-font); }
 
         .pc-stars {
           position: absolute; bottom: 8px; left: 8px;
@@ -374,9 +377,9 @@ const Products: React.FC<ProductsProps> = ({ t, lang, onAdd }) => {
           padding: 9px 18px;
           background: #c9a84c; color: #0a1f0e;
           border: none; cursor: pointer;
-          font-family: 'DM Sans', sans-serif;
-          font-size: 11px; font-weight: 700;
-          letter-spacing: 0.15em; text-transform: uppercase;
+          font-family: var(--pr-font);
+          font-size: 12px; font-weight: 700;
+          letter-spacing: 0.12em; text-transform: uppercase;
           clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px));
           transition: background 0.2s;
         }
@@ -392,11 +395,14 @@ const Products: React.FC<ProductsProps> = ({ t, lang, onAdd }) => {
         .pc-info {
           padding: 10px 10px 10px;
           border-top: 1px solid rgba(201,168,76,0.1);
+          flex: 1;
+          display: flex;
+          flex-direction: column;
         }
         @media (min-width: 640px) { .pc-info { padding: 12px 14px 12px; } }
 
         .pc-name {
-          font-family: 'Playfair Display', serif;
+          font-family: var(--pr-font);
           font-size: 13px; font-weight: 700;
           color: #fff; line-height: 1.3; margin: 0 0 5px;
           display: -webkit-box;
@@ -407,8 +413,8 @@ const Products: React.FC<ProductsProps> = ({ t, lang, onAdd }) => {
         .pc:hover .pc-name { color: #c9a84c; }
 
         .pc-desc {
-          font-family: 'DM Sans', sans-serif;
-          font-size: 10px; font-weight: 300;
+          font-family: var(--pr-font);
+          font-size: 10px; font-weight: 400;
           color: rgba(255,255,255,0.45); line-height: 1.6;
           margin: 0 0 10px;
           display: -webkit-box;
@@ -424,12 +430,13 @@ const Products: React.FC<ProductsProps> = ({ t, lang, onAdd }) => {
           background: rgba(201,168,76,0.1);
           border: 1px solid rgba(201,168,76,0.25);
           color: #c9a84c;
-          font-family: 'DM Sans', sans-serif;
+          font-family: var(--pr-font);
           font-size: 10px; font-weight: 700;
-          letter-spacing: 0.12em; text-transform: uppercase;
+          letter-spacing: 0.1em; text-transform: uppercase;
           cursor: pointer;
           clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
           transition: all 0.2s ease;
+          margin-top: auto;
         }
         @media (min-width: 640px) { .pc-add { font-size: 11px; padding: 9px 0; } }
         .pc-add:hover { background: rgba(201,168,76,0.2); border-color: rgba(201,168,76,0.5); }
@@ -442,9 +449,14 @@ const Products: React.FC<ProductsProps> = ({ t, lang, onAdd }) => {
         /* ── BOTTOM CTA ── */
         .pr-cta {
           position: relative; z-index: 1;
-          display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;
-          margin-top: 60px; padding: 0 20px;
-          opacity: 0; transform: translateY(16px);
+          display: flex; 
+          justify-content: center;
+          gap: 14px; 
+          flex-wrap: wrap;
+          margin-top: 60px; 
+          padding: 0 20px;
+          opacity: 0; 
+          transform: translateY(16px);
           transition: opacity 0.6s ease 0.4s, transform 0.6s ease 0.4s;
         }
         .pr-cta.vis { opacity: 1; transform: translateY(0); }
@@ -453,32 +465,20 @@ const Products: React.FC<ProductsProps> = ({ t, lang, onAdd }) => {
           display: inline-flex; align-items: center; gap: 9px;
           padding: 14px 32px;
           background: #c9a84c; color: #0a1f0e;
-          font-family: 'DM Sans', sans-serif;
-          font-size: 0.72rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+          font-family: var(--pr-font);
+          font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
           border: none; cursor: pointer; text-decoration: none;
           clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 100%, 0 calc(100% - 9px));
           transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
         }
         .pr-cta-btn:hover { background: #d4b560; box-shadow: 0 8px 28px rgba(201,168,76,0.35); transform: translateY(-2px); }
 
-        .pr-cta-ghost {
-          display: inline-flex; align-items: center; gap: 9px;
-          padding: 14px 32px;
-          background: transparent; color: rgba(255,255,255,0.6);
-          font-family: 'DM Sans', sans-serif;
-          font-size: 0.72rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase;
-          border: 1px solid rgba(255,255,255,0.12); cursor: pointer;
-          transition: border-color 0.2s, color 0.2s;
-          text-decoration: none;
-        }
-        .pr-cta-ghost:hover { border-color: rgba(201,168,76,0.4); color: #c9a84c; }
-
         /* empty */
         .pr-empty {
           position: relative; z-index: 1;
           text-align: center; padding: 60px 20px;
           color: rgba(255,255,255,0.35);
-          font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+          font-family: var(--pr-font); font-size: 0.88rem;
         }
 
         @media (max-width: 640px) {
@@ -562,11 +562,6 @@ const Products: React.FC<ProductsProps> = ({ t, lang, onAdd }) => {
                      lang === 'fr' ? 'Voir Tous les Produits' :
                      'View All Products'}</span>
               <ArrowRight size={13} />
-            </button>
-            <button className="pr-cta-ghost">
-              <span>{lang === 'ar' ? 'معرفة المزيد' :
-                     lang === 'fr' ? 'En Savoir Plus' :
-                     'Learn More'}</span>
             </button>
           </div>
         )}

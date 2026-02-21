@@ -10,9 +10,10 @@ interface FooterProps {
     contact: string;
   };
   lang: Language;
+  onAdminClick: () => void;
 }
 
-const Footer: React.FC<FooterProps> = ({ t, lang }) => {
+const Footer: React.FC<FooterProps> = ({ t, lang, onAdminClick }) => {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
   const isRTL = lang === 'ar' || lang === 'ama';
 
@@ -165,6 +166,19 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
         }
         .ft-made-heart { color: #c9a84c; font-size: 0.9rem; }
 
+        /* ── ADMIN BUTTON ── */
+        .ft-admin-btn {
+          background: none;
+          border: none;
+          color: rgba(255,255,255,0.1);
+          font-size: 14px;
+          cursor: pointer;
+          padding: 4px 8px;
+          line-height: 1;
+          transition: color 0.2s;
+        }
+        .ft-admin-btn:hover { color: rgba(201,168,76,0.4); }
+
         /* ── SCROLL TO TOP ── */
         .ft-scroll-btn {
           position: fixed; bottom: 28px; right: 28px; z-index: 99;
@@ -244,9 +258,19 @@ const Footer: React.FC<FooterProps> = ({ t, lang }) => {
               © {new Date().getFullYear()} <strong>IMIRI Cooperative</strong>.{' '}
               {tr('All rights reserved.', 'Tous droits réservés.', 'جميع الحقوق محفوظة.')}
             </p>
+
+            {/* ── Admin hidden trigger ── */}
+            <button
+              className="ft-admin-btn"
+              onClick={onAdminClick}
+              title="Admin"
+            >
+              ⚙
+            </button>
+
             <p className="ft-made">
               <span>{tr('Made with', 'Fait avec', 'صنع بـ')}</span>
-              <span className="ft-made-heart">♥</span>
+             
               <span>{tr('in Morocco', 'au Maroc', 'في المغرب')} · 2026</span>
             </p>
           </div>

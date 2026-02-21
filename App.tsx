@@ -12,8 +12,8 @@ import CartDrawer from './components/CartDrawer';
 import { AdminDashboard } from './src/admin/index';
 
 const App: React.FC = () => {
-  const [lang, setLang]           = useState<Language>('en');
-  const [cart, setCart]           = useState<CartItem[]>([]);
+  const [lang, setLang]             = useState<Language>('en');
+  const [cart, setCart]             = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isAdminMode, setIsAdminMode] = useState(false);
 
@@ -80,33 +80,6 @@ const App: React.FC = () => {
   return (
     <div className={`min-h-screen font-sans ${isRTL ? 'font-arabic' : lang === 'ama' ? 'font-tifinagh' : ''}`}>
 
-      {/* ── Admin trigger button ── */}
-      <button
-        onClick={() => setIsAdminMode(true)}
-        title="Admin"
-        style={{
-          position: 'fixed',
-          bottom: 80,
-          left: 16,
-          zIndex: 9998,
-          width: 36,
-          height: 36,
-          borderRadius: '50%',
-          background: 'rgba(0,0,0,0.25)',
-          border: '1px solid rgba(255,255,255,0.1)',
-          color: 'rgba(255,255,255,0.35)',
-          fontSize: 16,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          cursor: 'pointer',
-          transition: 'all 0.2s ease',
-          backdropFilter: 'blur(4px)',
-        }}
-      >
-        ⚙
-      </button>
-
       <Navbar
         currentLang={lang}
         setLang={setLang}
@@ -122,7 +95,12 @@ const App: React.FC = () => {
         <Contact  lang={lang} />
       </main>
 
-      <Footer t={t.nav} lang={lang} />
+      <Footer
+        t={t.nav}
+        lang={lang}
+        onAdminClick={() => setIsAdminMode(true)}
+      />
+
       <FloatingWhatsApp />
 
       <CartDrawer

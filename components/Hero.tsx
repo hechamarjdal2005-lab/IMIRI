@@ -82,12 +82,10 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
   return (
     <>
       <style>{`
-        /* ── COCKTAIL FONT (Baloo 2 — round, friendly, organic strokes) ── */
         @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Noto+Sans+Tifinagh&display=swap');
 
         *, *::before, *::after { box-sizing: border-box; }
 
-        /* ── CSS VARIABLES ── */
         :root {
           --font-cocktail: 'Baloo 2', cursive;
           --font-ama: 'Noto Sans Tifinagh', sans-serif;
@@ -101,7 +99,7 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
         .h-wrap {
           position: relative;
           width: 100%;
-          height: 100svh;
+          height: 100vh;
           min-height: 600px;
           overflow: hidden;
           font-family: var(--font-cocktail);
@@ -137,110 +135,6 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
           z-index: 2;
         }
 
-        /* ── NAVBAR ── */
-        .h-nav {
-          position: absolute;
-          top: 0; left: 0; right: 0;
-          z-index: 30;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 28px 48px;
-        }
-
-        .h-nav-logo {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          text-decoration: none;
-        }
-
-        .h-logo-icon {
-          width: 38px; height: 38px;
-          border-radius: 11px;
-          background: rgba(128,199,86,0.2);
-          border: 1px solid rgba(128,199,86,0.45);
-          display: flex; align-items: center; justify-content: center;
-          backdrop-filter: blur(8px);
-        }
-
-        .h-logo-text {
-          font-family: var(--font-cocktail);
-          font-size: 18px;
-          font-weight: 800;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-          color: white;
-          line-height: 1;
-        }
-
-        .h-logo-sub {
-          font-family: var(--font-cocktail);
-          font-size: 10px;
-          font-weight: 400;
-          letter-spacing: 0.18em;
-          color: rgba(255,255,255,0.5);
-          text-transform: uppercase;
-          margin-top: 2px;
-        }
-
-        .h-nav-right {
-          display: flex;
-          align-items: center;
-          gap: 16px;
-        }
-
-        .h-nav-pill {
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          padding: 9px 20px;
-          background: rgba(255,255,255,0.1);
-          backdrop-filter: blur(12px);
-          border: 1px solid rgba(255,255,255,0.15);
-          border-radius: 100px;
-          color: rgba(255,255,255,0.85);
-          font-family: var(--font-cocktail);
-          font-size: 13px;
-          font-weight: 500;
-          letter-spacing: 0.04em;
-          text-decoration: none;
-          transition: all 0.25s ease;
-          cursor: pointer;
-        }
-
-        .h-nav-pill:hover {
-          background: rgba(128,199,86,0.22);
-          border-color: rgba(128,199,86,0.45);
-          color: white;
-        }
-
-        .h-nav-menu {
-          width: 40px; height: 40px;
-          border-radius: 11px;
-          background: rgba(255,255,255,0.1);
-          backdrop-filter: blur(12px);
-          border: 1px solid rgba(255,255,255,0.14);
-          display: flex; flex-direction: column;
-          align-items: center; justify-content: center;
-          gap: 5px; cursor: pointer;
-          transition: all 0.25s ease;
-        }
-
-        .h-nav-menu:hover { background: rgba(255,255,255,0.18); }
-
-        .h-nav-menu span {
-          display: block; height: 1.5px;
-          background: white; border-radius: 2px;
-          transition: width 0.25s ease;
-        }
-
-        .h-nav-menu span:nth-child(1) { width: 18px; }
-        .h-nav-menu span:nth-child(2) { width: 12px; }
-        .h-nav-menu span:nth-child(3) { width: 16px; }
-        .h-nav-menu:hover span { width: 18px; }
-
-        /* ── CENTERED CONTENT ── */
         .h-content {
           position: absolute;
           inset: 0;
@@ -287,7 +181,6 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
           color: var(--green-light);
         }
 
-        /* ── TITLE — Cocktail bold rounded style ── */
         .h-title {
           font-family: var(--font-cocktail);
           font-size: clamp(44px, 8vw, 100px);
@@ -310,7 +203,6 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
           animation: up 0.7s cubic-bezier(0.16,1,0.3,1) forwards;
         }
 
-        /* Last word gets green accent — matches Cocktail's playful character */
         .h-title-em {
           color: var(--green);
           position: relative;
@@ -441,101 +333,6 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
           transform: translateY(-2px);
         }
 
-        /* ── BOTTOM STATS BAR ── */
-        .h-bottom {
-          position: absolute;
-          bottom: 0; left: 0; right: 0;
-          z-index: 10;
-          display: flex;
-          align-items: stretch;
-          backdrop-filter: blur(18px);
-          background: rgba(6, 16, 4, 0.58);
-          border-top: 1px solid rgba(255,255,255,0.07);
-          opacity: 0;
-          animation: ${mounted ? 'up 0.6s ease forwards 1.35s' : 'none'};
-        }
-
-        .h-stat {
-          flex: 1;
-          display: flex;
-          align-items: center;
-          gap: 14px;
-          padding: 22px 32px;
-          border-right: 1px solid rgba(255,255,255,0.05);
-          transition: background 0.25s ease;
-        }
-
-        .h-stat:last-child { border-right: none; }
-        .h-stat:hover { background: rgba(128,199,86,0.07); }
-
-        .h-stat-n {
-          font-family: var(--font-cocktail);
-          font-size: 30px;
-          font-weight: 800;
-          color: var(--green);
-          line-height: 1;
-          white-space: nowrap;
-        }
-
-        .h-stat-vr {
-          width: 1px; height: 24px;
-          background: rgba(128,199,86,0.22);
-          flex-shrink: 0;
-        }
-
-        .h-stat-l {
-          font-family: var(--font-cocktail);
-          font-size: 11px;
-          font-weight: 400;
-          color: rgba(255,255,255,0.48);
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          line-height: 1.55;
-        }
-
-        /* ── SCROLL ── */
-        .h-scroll {
-          position: absolute;
-          bottom: 96px;
-          right: 44px;
-          z-index: 10;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 8px;
-          opacity: 0;
-          animation: ${mounted ? 'fadeIn 0.6s ease forwards 1.6s' : 'none'};
-        }
-
-        .h-scroll-track {
-          width: 1px; height: 52px;
-          background: rgba(255,255,255,0.14);
-          position: relative;
-          overflow: hidden;
-          border-radius: 1px;
-        }
-
-        .h-scroll-run {
-          position: absolute;
-          top: -40%; left: 0; right: 0;
-          height: 40%;
-          background: var(--green);
-          border-radius: 1px;
-          animation: scrollRun 1.8s ease-in-out infinite;
-        }
-
-        @keyframes scrollRun { 0%{top:-40%} 100%{top:140%} }
-
-        .h-scroll-lbl {
-          font-family: var(--font-cocktail);
-          font-size: 9px;
-          letter-spacing: 0.2em;
-          text-transform: uppercase;
-          color: rgba(255,255,255,0.32);
-          writing-mode: vertical-rl;
-        }
-
-        /* ── BADGE ── */
         .h-badge {
           position: absolute;
           top: 50%;
@@ -574,19 +371,56 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
           line-height: 1.6;
         }
 
+        .h-scroll {
+          position: absolute;
+          bottom: 40px;
+          right: 44px;
+          z-index: 10;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 8px;
+          opacity: 0;
+          animation: ${mounted ? 'fadeIn 0.6s ease forwards 1.6s' : 'none'};
+        }
+
+        .h-scroll-track {
+          width: 1px; height: 52px;
+          background: rgba(255,255,255,0.14);
+          position: relative;
+          overflow: hidden;
+          border-radius: 1px;
+        }
+
+        .h-scroll-run {
+          position: absolute;
+          top: -40%; left: 0; right: 0;
+          height: 40%;
+          background: var(--green);
+          border-radius: 1px;
+          animation: scrollRun 1.8s ease-in-out infinite;
+        }
+
+        @keyframes scrollRun { 0%{top:-40%} 100%{top:140%} }
+
+        .h-scroll-lbl {
+          font-family: var(--font-cocktail);
+          font-size: 9px;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: rgba(255,255,255,0.32);
+          writing-mode: vertical-rl;
+        }
+
         @keyframes up    { to { opacity:1; transform:translateY(0); } }
         @keyframes fadeIn { to { opacity: 1; } }
 
-        /* ── TIFINAGH (Amazigh) ── */
         .lang-ama {
           font-family: var(--font-ama) !important;
           font-weight: 400 !important;
         }
 
-        /* ══ MOBILE ══ */
         @media (max-width: 768px) {
-          .h-nav { padding: 18px 20px; }
-          .h-nav-pill { display: none; }
           .h-content { padding: 96px 20px 120px; }
           .h-title { font-size: clamp(36px, 10vw, 58px); }
           .h-sub { max-width: 100%; font-size: 14px; }
@@ -594,20 +428,15 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
           .h-cta, .h-ghost { padding: 12px 24px; font-size: 13px; }
           .h-badge { display: none; }
           .h-scroll { display: none; }
-          .h-stat { padding: 16px 16px; gap: 10px; }
-          .h-stat-n { font-size: 24px; }
-          .h-stat-l { font-size: 9px; }
         }
 
         @media (max-width: 420px) {
           .h-actions { flex-direction: column; width: 100%; }
           .h-cta, .h-ghost { width: 100%; justify-content: center; }
-          .h-stat { padding: 14px 10px; }
         }
       `}</style>
 
       <section className="h-wrap">
-        {/* Background */}
         <div ref={parallaxRef} className="h-bg" style={{ backgroundImage: `url(${bgImage})` }} />
         <div className="h-ov1" />
         <div className="h-ov2" />
@@ -615,30 +444,6 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
           <div style={{ position:'absolute', inset:0, zIndex:2, backgroundColor: hero.overlay_color, opacity: 0.22 }} />
         )}
 
-        {/* Navbar */}
-        <nav className="h-nav">
-          <a href="/" className="h-nav-logo">
-            <div className="h-logo-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path d="M12 2C8 7 4 10 4 15a8 8 0 0016 0c0-5-4-8-8-13z" fill="#80C756"/>
-              </svg>
-            </div>
-            <div>
-              <div className="h-logo-text">IMIRI</div>
-              <div className="h-logo-sub">Cooperative</div>
-            </div>
-          </a>
-          <div className="h-nav-right">
-            <a href="#products" className="h-nav-pill">
-              {lang === 'ar' ? 'المنتجات' : lang === 'fr' ? 'Produits' : 'Products'}
-            </a>
-            <div className="h-nav-menu" aria-label="Menu">
-              <span /><span /><span />
-            </div>
-          </div>
-        </nav>
-
-        {/* Content */}
         <div className="h-content">
           <div className="h-eyebrow">
             <div className="h-eyebrow-dot" />
@@ -693,7 +498,6 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
           </div>
         </div>
 
-        {/* Badge desktop */}
         <div className="h-badge">
           <div className="h-badge-n">15+</div>
           <div className="h-badge-t">
@@ -701,12 +505,10 @@ const Hero: React.FC<HeroProps> = ({ t, isRTL, lang }) => {
           </div>
         </div>
 
-        {/* Scroll indicator */}
         <div className="h-scroll">
           <div className="h-scroll-track"><div className="h-scroll-run" /></div>
           <span className="h-scroll-lbl">Scroll</span>
         </div>
-
       </section>
     </>
   );

@@ -78,7 +78,10 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className={`min-h-screen font-sans ${isRTL ? 'font-arabic' : lang === 'ama' ? 'font-tifinagh' : ''}`}>
+    <div
+      className={`min-h-screen font-sans ${isRTL ? 'font-arabic' : lang === 'ama' ? 'font-tifinagh' : ''}`}
+      style={{ background: '#0f1f0a' }}
+    >
 
       <Navbar
         currentLang={lang}
@@ -88,7 +91,8 @@ const App: React.FC = () => {
         onCartClick={() => setIsCartOpen(true)}
       />
 
-      <main>
+      {/* ✅ FIX: paddingTop 72px bach Hero yji taht Navbar */}
+      <main style={{ paddingTop: '72px' }}>
         <Hero     t={t.hero}     isRTL={isRTL} lang={lang} />
         <About    lang={lang} />
         <Products t={t.products} lang={lang}   onAdd={addToCart} />

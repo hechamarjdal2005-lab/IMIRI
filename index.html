@@ -106,7 +106,14 @@
          STYLES
     ═══════════════════════════════════════════ -->
     <style>
-      body            { font-family: 'Inter', sans-serif; }
+      /* ✅ FIX: background sombre — supprime le fond blanc */
+      html, body, #root {
+        margin: 0;
+        padding: 0;
+        background: #0a1f0e;
+        min-height: 100%;
+      }
+      body            { font-family: 'Inter', sans-serif; color: #fff; }
       .font-arabic    { font-family: 'Noto Sans Arabic', sans-serif; }
       .font-tifinagh  { font-family: 'Noto Sans Tifinagh', sans-serif; }
       html            { scroll-behavior: smooth; }
@@ -127,7 +134,8 @@
     </script>
   </head>
 
-  <body class="bg-slate-50 text-slate-900">
+  <!-- ✅ FIX: supprimé bg-slate-50 qui causait le fond blanc -->
+  <body class="text-slate-900">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>
